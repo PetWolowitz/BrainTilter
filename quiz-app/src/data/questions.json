@@ -1,0 +1,92 @@
+[
+    {
+        "question": "Qual è il pianeta più vicino al Sole?",
+        "options": ["Venere", "Terra", "Mercurio"],
+        "correct": "Mercurio",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Quale dei seguenti numeri è un numero primo di Mersenne?",
+        "options": ["2047", "2039", "2053"],
+        "correct": "2039",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Chi ha formulato il teorema di Fermat-Wiles?",
+        "options": ["Andrew Wiles", "Pierre de Fermat", "Carl Friedrich Gauss"],
+        "correct": "Andrew Wiles",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Qual è l'enzima chiave nella reazione di PCR?",
+        "options": ["Taq polimerasi", "DNA ligasi", "RNA polimerasi"],
+        "correct": "Taq polimerasi",
+        "difficulty": "medium"
+    },
+    {
+        "question": "In che anno è stata scoperta l'America?",
+        "options": ["1492", "1498", "1500"],
+        "correct": "1492",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Quale particella subatomica è stata teorizzata da Higgs prima della sua scoperta?",
+        "options": ["Bosone di Higgs", "Quark top", "Neutrino tau"],
+        "correct": "Bosone di Higgs",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi ha dimostrato l'ultimo teorema di Fermat?",
+        "options": ["Andrew Wiles", "Grigori Perelman", "Terence Tao"],
+        "correct": "Andrew Wiles",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Qual è la sequenza corretta del processo di splicing dell'RNA?",
+        "options": ["Rimozione introni, unione esoni", "Unione introni, rimozione esoni", "Trascrizione inversa"],
+        "correct": "Rimozione introni, unione esoni",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Quale di questi è un esempio di gruppo di Lie eccezionale?",
+        "options": ["E8", "SO(3)", "SU(2)"],
+        "correct": "E8",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Qual è la capitale dell'Italia?",
+        "options": ["Milano", "Roma", "Napoli"],
+        "correct": "Roma",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Quale scienziato ha proposto il principio di indeterminazione?",
+        "options": ["Werner Heisenberg", "Niels Bohr", "Max Planck"],
+        "correct": "Werner Heisenberg",
+        "difficulty": "medium"
+    },
+    {
+        "question": "In quale anno è stata formulata la congettura di Poincaré?",
+        "options": ["1904", "1905", "1903"],
+        "correct": "1904",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Qual è la formula della curvatura gaussiana?",
+        "options": ["K = k1 * k2", "K = k1 + k2", "K = k1 / k2"],
+        "correct": "K = k1 * k2",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Chi ha scritto 'Il Piccolo Principe'?",
+        "options": ["Antoine de Saint-Exupéry", "Jules Verne", "Victor Hugo"],
+        "correct": "Antoine de Saint-Exupéry",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Quale è il significato del teorema di non-clonazione quantistica?",
+        "options": ["Impossibile copiare stati quantistici", "Impossibile misurare stati quantistici", "Impossibile creare stati quantistici"],
+        "correct": "Impossibile copiare stati quantistici",
+        "difficulty": "hard"
+    }
+]

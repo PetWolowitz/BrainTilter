@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Cyber-Netic';
+    src: url('/fonts/CYBERNETIC.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cyber-BoldBook';
+    src: url('/fonts/Cyber-BoldBook.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.title-font {
+    font-family: 'Cyber-BoldBook', sans-serif;
+    text-shadow: 0 0 10px rgba(183, 57, 211, 0.5),
+    0 0 20px rgba(183, 57, 211, 0.3),
+    0 0 30px rgba(183, 57, 211, 0.2);
+}
