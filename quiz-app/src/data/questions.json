@@ -6,16 +6,34 @@
         "difficulty": "easy"
     },
     {
-        "question": "Quale dei seguenti numeri è un numero primo di Mersenne?",
-        "options": ["2047", "2039", "2053"],
-        "correct": "2039",
-        "difficulty": "extreme"
+        "question": "Qual è la capitale dell'Italia?",
+        "options": ["Milano", "Roma", "Napoli"],
+        "correct": "Roma",
+        "difficulty": "easy"
     },
     {
-        "question": "Chi ha formulato il teorema di Fermat-Wiles?",
-        "options": ["Andrew Wiles", "Pierre de Fermat", "Carl Friedrich Gauss"],
-        "correct": "Andrew Wiles",
-        "difficulty": "hard"
+        "question": "Chi ha scritto 'Il Piccolo Principe'?",
+        "options": ["Antoine de Saint-Exupéry", "Jules Verne", "Victor Hugo"],
+        "correct": "Antoine de Saint-Exupéry",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è il simbolo chimico dell'oro?",
+        "options": ["Au", "Ag", "Cu"],
+        "correct": "Au",
+        "difficulty": "easy"
+    },
+    {
+        "question": "In quale anno è iniziata la Prima Guerra Mondiale?",
+        "options": ["1914", "1915", "1913"],
+        "correct": "1914",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Chi ha dipinto la Gioconda?",
+        "options": ["Leonardo da Vinci", "Michelangelo", "Raffaello"],
+        "correct": "Leonardo da Vinci",
+        "difficulty": "easy"
     },
     {
         "question": "Qual è l'enzima chiave nella reazione di PCR?",
@@ -24,15 +42,21 @@
         "difficulty": "medium"
     },
     {
-        "question": "In che anno è stata scoperta l'America?",
-        "options": ["1492", "1498", "1500"],
-        "correct": "1492",
-        "difficulty": "easy"
-    },
-    {
-        "question": "Quale particella subatomica è stata teorizzata da Higgs prima della sua scoperta?",
+        "question": "Quale particella subatomica è stata teorizzata da Higgs?",
         "options": ["Bosone di Higgs", "Quark top", "Neutrino tau"],
         "correct": "Bosone di Higgs",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi ha formulato la teoria della relatività ristretta?",
+        "options": ["Albert Einstein", "Max Planck", "Niels Bohr"],
+        "correct": "Albert Einstein",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il processo di divisione cellulare delle cellule somatiche?",
+        "options": ["Mitosi", "Meiosi", "Citochinesi"],
+        "correct": "Mitosi",
         "difficulty": "medium"
     },
     {
@@ -42,34 +66,22 @@
         "difficulty": "hard"
     },
     {
-        "question": "Qual è la sequenza corretta del processo di splicing dell'RNA?",
-        "options": ["Rimozione introni, unione esoni", "Unione introni, rimozione esoni", "Trascrizione inversa"],
-        "correct": "Rimozione introni, unione esoni",
-        "difficulty": "medium"
-    },
-    {
-        "question": "Quale di questi è un esempio di gruppo di Lie eccezionale?",
-        "options": ["E8", "SO(3)", "SU(2)"],
-        "correct": "E8",
-        "difficulty": "extreme"
-    },
-    {
-        "question": "Qual è la capitale dell'Italia?",
-        "options": ["Milano", "Roma", "Napoli"],
-        "correct": "Roma",
-        "difficulty": "easy"
-    },
-    {
-        "question": "Quale scienziato ha proposto il principio di indeterminazione?",
-        "options": ["Werner Heisenberg", "Niels Bohr", "Max Planck"],
-        "correct": "Werner Heisenberg",
-        "difficulty": "medium"
-    },
-    {
-        "question": "In quale anno è stata formulata la congettura di Poincaré?",
-        "options": ["1904", "1905", "1903"],
-        "correct": "1904",
+        "question": "Quale filosofo è noto per il concetto di 'Übermensch'?",
+        "options": ["Friedrich Nietzsche", "Immanuel Kant", "Arthur Schopenhauer"],
+        "correct": "Friedrich Nietzsche",
         "difficulty": "hard"
+    },
+    {
+        "question": "Qual è il significato del teorema di impossibilità di Arrow?",
+        "options": ["Impossibilità di un sistema di voto perfetto", "Impossibilità del moto perpetuo", "Impossibilità della quadratura del cerchio"],
+        "correct": "Impossibilità di un sistema di voto perfetto",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Quale dei seguenti è un numero primo di Mersenne?",
+        "options": ["2047", "2039", "2053"],
+        "correct": "2039",
+        "difficulty": "extreme"
     },
     {
         "question": "Qual è la formula della curvatura gaussiana?",
@@ -78,15 +90,670 @@
         "difficulty": "extreme"
     },
     {
-        "question": "Chi ha scritto 'Il Piccolo Principe'?",
-        "options": ["Antoine de Saint-Exupéry", "Jules Verne", "Victor Hugo"],
-        "correct": "Antoine de Saint-Exupéry",
+        "question": "Chi ha formulato il teorema di incompletezza?",
+        "options": ["Kurt Gödel", "Bertrand Russell", "David Hilbert"],
+        "correct": "Kurt Gödel",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Qual è il più grande numero primo conosciuto?",
+        "options": ["2^82,589,933 - 1", "2^82,589,932 - 1", "2^82,589,934 - 1"],
+        "correct": "2^82,589,933 - 1",
+        "difficulty": "extreme"
+    },
+    
+    {
+        "question": "Qual è la formula per l'area di un triangolo?",
+        "options": ["(base × altezza) ÷ 2", "base × altezza", "base + altezza"],
+        "correct": "(base × altezza) ÷ 2",
+        "category": "matematica",
         "difficulty": "easy"
     },
     {
-        "question": "Quale è il significato del teorema di non-clonazione quantistica?",
-        "options": ["Impossibile copiare stati quantistici", "Impossibile misurare stati quantistici", "Impossibile creare stati quantistici"],
-        "correct": "Impossibile copiare stati quantistici",
+        "question": "Qual è la costante di Planck?",
+        "options": ["6.62607015 × 10⁻³⁴ J⋅s", "6.02214076 × 10²³ mol⁻¹", "1.602176634 × 10⁻¹⁹ C"],
+        "correct": "6.62607015 × 10⁻³⁴ J⋅s",
+        "category": "fisica",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Chi ha sviluppato Minecraft?",
+        "options": ["Markus Persson", "Hideo Kojima", "Shigeru Miyamoto"],
+        "correct": "Markus Persson",
+        "category": "videogiochi",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è il nome del protagonista di Metal Gear Solid?",
+        "options": ["Solid Snake", "Liquid Snake", "Big Boss"],
+        "correct": "Solid Snake",
+        "category": "videogiochi",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi ha dipinto 'La nascita di Venere'?",
+        "options": ["Sandro Botticelli", "Leonardo da Vinci", "Michelangelo"],
+        "correct": "Sandro Botticelli",
+        "category": "arte",
+        "difficulty": "medium"
+    },
+    {
+        "question": "In quale tipo di stella si trasformerà il Sole alla fine della sua vita?",
+        "options": ["Nana bianca", "Gigante rossa", "Buco nero"],
+        "correct": "Nana bianca",
+        "category": "astronomia",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il valore di pH di una soluzione neutra?",
+        "options": ["7", "0", "14"],
+        "correct": "7",
+        "category": "chimica",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Chi detiene il record di gol in Serie A?",
+        "options": ["Silvio Piola", "Francesco Totti", "Alessandro Del Piero"],
+        "correct": "Silvio Piola",
+        "category": "sport",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi è stato il primo Presidente della Repubblica Italiana?",
+        "options": ["Enrico De Nicola", "Luigi Einaudi", "Giovanni Gronchi"],
+        "correct": "Enrico De Nicola",
+        "category": "educazione_civica",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Quale civiltà antica ha costruito le piramidi di Giza?",
+        "options": ["Egiziani", "Sumeri", "Babilonesi"],
+        "correct": "Egiziani",
+        "category": "storia",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è la montagna più alta d'Italia?",
+        "options": ["Monte Bianco", "Monte Rosa", "Gran Paradiso"],
+        "correct": "Monte Bianco",
+        "category": "geografia",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Chi ha vinto il Festival di Sanremo 2024?",
+        "options": ["Angelina Mango", "Geolier", "Annalisa"],
+        "correct": "Angelina Mango",
+        "category": "attualita",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è il teorema fondamentale del calcolo differenziale?",
+        "options": [
+            "La derivata dell'integrale definito è la funzione integranda",
+            "Ogni funzione continua è derivabile",
+            "Ogni funzione derivabile è continua"
+        ],
+        "correct": "La derivata dell'integrale definito è la funzione integranda",
+        "category": "matematica",
         "difficulty": "hard"
+    },
+    {
+        "question": "Qual è l'equazione di Schrödinger indipendente dal tempo?",
+        "options": [
+            "Ĥψ = Eψ",
+            "E = mc²",
+            "F = ma"
+        ],
+        "correct": "Ĥψ = Eψ",
+        "category": "fisica",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Come si chiama la patch dell'algoritmo di mining che ha reso ETH proof of stake?",
+        "options": ["The Merge", "The Surge", "The Verge"],
+        "correct": "The Merge",
+        "category": "attualita",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Qual è la serie di Fourier di una funzione periodica?",
+        "options": [
+            "Somma di seni e coseni",
+            "Somma di esponenziali",
+            "Somma di polinomi"
+        ],
+        "correct": "Somma di seni e coseni",
+        "category": "matematica",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Quale console detiene il record di vendite nella storia?",
+        "options": ["PlayStation 2", "Nintendo DS", "Game Boy"],
+        "correct": "PlayStation 2",
+        "category": "videogiochi",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi è considerato il padre della bomba atomica?",
+        "options": [
+            "J. Robert Oppenheimer",
+            "Albert Einstein",
+            "Enrico Fermi"
+        ],
+        "correct": "J. Robert Oppenheimer",
+        "category": "storia",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è la capitale del Burkina Faso?",
+        "options": ["Ouagadougou", "Bamako", "Niamey"],
+        "correct": "Ouagadougou",
+        "category": "geografia",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Come si chiama lo studio dei funghi?",
+        "options": ["Micologia", "Batteriologia", "Virologia"],
+        "correct": "Micologia",
+        "category": "chimica",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è l'età dell'universo?",
+        "options": [
+            "13.8 miliardi di anni",
+            "12.8 miliardi di anni",
+            "14.8 miliardi di anni"
+        ],
+        "correct": "13.8 miliardi di anni",
+        "category": "astronomia",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi ha vinto il Gran Premio di Formula 1 di Monaco nel 2023?",
+        "options": ["Max Verstappen", "Fernando Alonso", "Lewis Hamilton"],
+        "correct": "Max Verstappen",
+        "category": "sport",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il significato del teorema di Noether?",
+        "options": [
+            "Ad ogni simmetria corrisponde una quantità conservata",
+            "L'energia si conserva sempre",
+            "Il momento angolare si conserva sempre"
+        ],
+        "correct": "Ad ogni simmetria corrisponde una quantità conservata",
+        "category": "fisica",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Chi ha sviluppato The Legend of Zelda?",
+        "options": ["Shigeru Miyamoto", "Hideo Kojima", "Sid Meier"],
+        "correct": "Shigeru Miyamoto",
+        "category": "videogiochi",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è il fiume più lungo del Sud America?",
+        "options": ["Rio delle Amazzoni", "Rio Paraná", "Rio Orinoco"],
+        "correct": "Rio delle Amazzoni",
+        "category": "geografia",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Chi ha dipinto 'L'urlo'?",
+        "options": ["Edvard Munch", "Vincent van Gogh", "Claude Monet"],
+        "correct": "Edvard Munch",
+        "category": "arte",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il quarto stato della materia?",
+        "options": ["Plasma", "Condensato di Bose-Einstein", "Superfluido"],
+        "correct": "Plasma",
+        "category": "fisica",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi era il dio del sole nell'antico Egitto?",
+        "options": ["Ra", "Osiride", "Anubi"],
+        "correct": "Ra",
+        "category": "storia",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Quale articolo della Costituzione italiana sancisce l'uguaglianza dei cittadini?",
+        "options": ["Articolo 3", "Articolo 1", "Articolo 2"],
+        "correct": "Articolo 3",
+        "category": "educazione_civica",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è la teoria di Yang-Mills?",
+        "options": [
+            "Teoria delle interazioni di gauge non abeliane",
+            "Teoria della gravità quantistica",
+            "Teoria delle stringhe"
+        ],
+        "correct": "Teoria delle interazioni di gauge non abeliane",
+        "category": "fisica",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Qual è l'unico numero primo pari?",
+        "options": ["2", "1", "4"],
+        "correct": "2",
+        "category": "matematica",
+        "difficulty": "easy"
+    },
+    {
+        "question": "In che anno è stato pubblicato il primo Super Mario Bros?",
+        "options": ["1985", "1983", "1987"],
+        "correct": "1985",
+        "category": "videogiochi",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Quale dei seguenti è un superconduttore ad alta temperatura?",
+        "options": ["YBCO", "Mercurio", "Piombo"],
+        "correct": "YBCO",
+        "category": "fisica",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Chi ha dipinto 'La notte stellata'?",
+        "options": ["Vincent van Gogh", "Claude Monet", "Pablo Picasso"],
+        "correct": "Vincent van Gogh",
+        "category": "arte",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è la costante di struttura fine?",
+        "options": ["1/137", "1/127", "1/147"],
+        "correct": "1/137",
+        "category": "fisica",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Quale città ospiterà le Olimpiadi 2028?",
+        "options": ["Los Angeles", "Parigi", "Brisbane"],
+        "correct": "Los Angeles",
+        "category": "attualita",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il satellite più grande di Saturno?",
+        "options": ["Titano", "Encelado", "Mimas"],
+        "correct": "Titano",
+        "category": "astronomia",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi è l'autore di 'Metal Gear Solid'?",
+        "options": ["Hideo Kojima", "Shigeru Miyamoto", "Hironobu Sakaguchi"],
+        "correct": "Hideo Kojima",
+        "category": "videogiochi",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il pH di una soluzione 0.1M di HCl?",
+        "options": ["1", "2", "3"],
+        "correct": "1",
+        "category": "chimica",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi ha vinto il mondiale di F1 nel 2023?",
+        "options": ["Max Verstappen", "Lewis Hamilton", "Charles Leclerc"],
+        "correct": "Max Verstappen",
+        "category": "sport",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è la capitale del Kazakhstan?",
+        "options": ["Astana", "Almaty", "Bishkek"],
+        "correct": "Astana",
+        "category": "geografia",
+        "difficulty": "medium"
+    },
+    {
+        "question": "In che anno è stata fondata Apple?",
+        "options": ["1976", "1975", "1977"],
+        "correct": "1976",
+        "category": "attualita",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi ha scoperto la radioattività?",
+        "options": ["Henri Becquerel", "Marie Curie", "Wilhelm Röntgen"],
+        "correct": "Henri Becquerel",
+        "category": "fisica",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Qual è il teorema fondamentale dell'algebra?",
+        "options": [
+            "Ogni polinomio ha almeno una radice complessa",
+            "Ogni polinomio ha solo radici reali",
+            "Ogni polinomio ha infinite radici"
+        ],
+        "correct": "Ogni polinomio ha almeno una radice complessa",
+        "category": "matematica",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Chi è stato il primo imperatore romano?",
+        "options": ["Augusto", "Giulio Cesare", "Tiberio"],
+        "correct": "Augusto",
+        "category": "storia",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il significato del principio di Pauli?",
+        "options": [
+            "Due fermioni non possono occupare lo stesso stato quantico",
+            "Due bosoni non possono occupare lo stesso stato quantico",
+            "Particelle identiche non possono occupare lo stesso spazio"
+        ],
+        "correct": "Due fermioni non possono occupare lo stesso stato quantico",
+        "category": "fisica",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Chi ha composto 'Le quattro stagioni'?",
+        "options": ["Antonio Vivaldi", "Johann Sebastian Bach", "Wolfgang Amadeus Mozart"],
+        "correct": "Antonio Vivaldi",
+        "category": "arte",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è l'acido più forte conosciuto?",
+        "options": ["Acido fluoroantimonico", "Acido solforico", "Acido cloridrico"],
+        "correct": "Acido fluoroantimonico",
+        "category": "chimica",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Chi ha vinto più Champions League nella storia?",
+        "options": ["Real Madrid", "Milan", "Liverpool"],
+        "correct": "Real Madrid",
+        "category": "sport",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è il più antico linguaggio di programmazione ancora in uso?",
+        "options": ["Fortran", "COBOL", "BASIC"],
+        "correct": "Fortran",
+        "category": "attualita",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Come si chiama il più grande acceleratore di particelle al mondo?",
+        "options": ["Large Hadron Collider", "Tevatron", "RHIC"],
+        "correct": "Large Hadron Collider",
+        "category": "fisica",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è la montagna più alta del Sistema Solare?",
+        "options": ["Monte Olimpo (Marte)", "Monte Everest (Terra)", "Maxwell Montes (Venere)"],
+        "correct": "Monte Olimpo (Marte)",
+        "category": "astronomia",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Chi ha sviluppato la teoria della relatività generale?",
+        "options": ["Albert Einstein", "Isaac Newton", "Max Planck"],
+        "correct": "Albert Einstein",
+        "category": "fisica",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il videogioco più venduto di tutti i tempi?",
+        "options": ["Minecraft", "Tetris", "Grand Theft Auto V"],
+        "correct": "Minecraft",
+        "category": "videogiochi",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Chi ha dipinto la Cappella Sistina?",
+        "options": ["Michelangelo", "Leonardo da Vinci", "Raffaello"],
+        "correct": "Michelangelo",
+        "category": "arte",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è la velocità di fuga dalla Terra?",
+        "options": ["11.2 km/s", "9.8 km/s", "13.4 km/s"],
+        "correct": "11.2 km/s",
+        "category": "fisica",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Chi ha formulato le leggi della termodinamica?",
+        "options": ["Rudolf Clausius", "James Joule", "Lord Kelvin"],
+        "correct": "Rudolf Clausius",
+        "category": "fisica",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Qual è il più grande deserto freddo del mondo?",
+        "options": ["Antartide", "Artico", "Gobi"],
+        "correct": "Antartide",
+        "category": "geografia",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi ha inventato il World Wide Web?",
+        "options": ["Tim Berners-Lee", "Vint Cerf", "Steve Jobs"],
+        "correct": "Tim Berners-Lee",
+        "category": "attualita",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Quale concetto matematico è alla base della crittografia RSA?",
+        "options": ["Fattorizzazione di numeri primi", "Teoria dei grafi", "Calcolo differenziale"],
+        "correct": "Fattorizzazione di numeri primi",
+        "category": "matematica",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Chi è il protagonista di The Legend of Zelda?",
+        "options": ["Link", "Zelda", "Ganon"],
+        "correct": "Link",
+        "category": "videogiochi",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è la temperatura del nucleo del Sole?",
+        "options": ["15 milioni °C", "10 milioni °C", "20 milioni °C"],
+        "correct": "15 milioni °C",
+        "category": "astronomia",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Chi ha vinto l'Oscar come miglior film nel 2024?",
+        "options": ["Oppenheimer", "Barbie", "Killers of the Flower Moon"],
+        "correct": "Oppenheimer",
+        "category": "attualita",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è la velocità di rotazione della Via Lattea?",
+        "options": ["828.000 km/h", "780.000 km/h", "900.000 km/h"],
+        "correct": "828.000 km/h",
+        "category": "astronomia",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Chi ha sviluppato Dark Souls?",
+        "options": ["FromSoftware", "Bandai Namco", "Square Enix"],
+        "correct": "FromSoftware",
+        "category": "videogiochi",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi è l'autore de 'I Promessi Sposi'?",
+        "options": ["Alessandro Manzoni", "Giacomo Leopardi", "Ugo Foscolo"],
+        "correct": "Alessandro Manzoni",
+        "category": "arte",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è la formula della relatività generale di Einstein?",
+        "options": ["Gμν = 8πG/c⁴ Tμν", "E = mc²", "F = ma"],
+        "correct": "Gμν = 8πG/c⁴ Tμν",
+        "category": "fisica",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "In che anno è stato fondato Instagram?",
+        "options": ["2010", "2009", "2011"],
+        "correct": "2010",
+        "category": "attualita",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è il numero massimo di elettroni nell'orbitale 3d?",
+        "options": ["10", "8", "6"],
+        "correct": "10",
+        "category": "chimica",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi ha vinto il premio Nobel per la Fisica nel 2023?",
+        "options": ["Agostini, Krausz e L'Huillier", "Alter, Houghton e Rice", "Aspect, Clauser e Zeilinger"],
+        "correct": "Agostini, Krausz e L'Huillier",
+        "category": "attualita",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Quale è la capitale del Bhutan?",
+        "options": ["Thimphu", "Paro", "Punakha"],
+        "correct": "Thimphu",
+        "category": "geografia",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Chi è stato il primo presidente della Quinta Repubblica francese?",
+        "options": ["Charles de Gaulle", "Georges Pompidou", "Valéry Giscard d'Estaing"],
+        "correct": "Charles de Gaulle",
+        "category": "storia",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è l'attuale record mondiale dei 100 metri piani maschili?",
+        "options": ["9.58 secondi", "9.63 secondi", "9.69 secondi"],
+        "correct": "9.58 secondi",
+        "category": "sport",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il pianeta più grande del Sistema Solare?",
+        "options": ["Giove", "Saturno", "Urano"],
+        "correct": "Giove",
+        "category": "astronomia",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Chi ha scritto la Divina Commedia?",
+        "options": ["Dante Alighieri", "Petrarca", "Boccaccio"],
+        "correct": "Dante Alighieri",
+        "category": "arte",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Qual è l'elemento chimico con il simbolo 'Na'?",
+        "options": ["Sodio", "Nichel", "Neon"],
+        "correct": "Sodio",
+        "category": "chimica",
+        "difficulty": "easy"
+    },
+    {
+        "question": "Quale paese è famoso per la Torre Eiffel?",
+        "options": ["Francia", "Italia", "Germania"],
+        "correct": "Francia",
+        "category": "geografia",
+        "difficulty": "easy"
+    },
+    {
+        "question": "In quale anno è stato firmato il Trattato di Versailles?",
+        "options": ["1919", "1920", "1918"],
+        "correct": "1919",
+        "category": "storia",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è l'unità di misura della forza?",
+        "options": ["Newton", "Pascal", "Joule"],
+        "correct": "Newton",
+        "category": "fisica",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Chi ha composto la Quinta Sinfonia?",
+        "options": ["Ludwig van Beethoven", "Wolfgang Amadeus Mozart", "Franz Schubert"],
+        "correct": "Ludwig van Beethoven",
+        "category": "arte",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il processo attraverso il quale le piante producono ossigeno?",
+        "options": ["Fotosintesi", "Respirazione cellulare", "Ossidazione"],
+        "correct": "Fotosintesi",
+        "category": "scienze",
+        "difficulty": "medium"
+    },
+    {
+        "question": "Qual è il significato di E=mc²?",
+        "options": ["Energia è uguale a massa per velocità della luce al quadrato", "Energia è uguale a massa per forza", "Energia è uguale a velocità della luce diviso la massa"],
+        "correct": "Energia è uguale a massa per velocità della luce al quadrato",
+        "category": "fisica",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Chi ha scritto 'Guerra e Pace'?",
+        "options": ["Lev Tolstoj", "Fëdor Dostoevskij", "Anton Čechov"],
+        "correct": "Lev Tolstoj",
+        "category": "arte",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Quale legge descrive il rapporto tra pressione e volume di un gas a temperatura costante?",
+        "options": ["Legge di Boyle", "Legge di Charles", "Legge di Gay-Lussac"],
+        "correct": "Legge di Boyle",
+        "category": "chimica",
+        "difficulty": "hard"
+    },
+    {
+        "question": "Qual è la costante gravitazionale universale?",
+        "options": ["6.674 × 10⁻¹¹ N·m²/kg²", "9.8 m/s²", "1.602 × 10⁻¹⁹ C"],
+        "correct": "6.674 × 10⁻¹¹ N·m²/kg²",
+        "category": "fisica",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Quale filosofo ha scritto 'Critica della ragion pura'?",
+        "options": ["Immanuel Kant", "René Descartes", "Georg Wilhelm Friedrich Hegel"],
+        "correct": "Immanuel Kant",
+        "category": "filosofia",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Qual è la formula di Lagrange per il calcolo delle variazioni?",
+        "options": ["∂L/∂q - d/dt(∂L/∂q̇) = 0", "F = ma", "E = mc²"],
+        "correct": "∂L/∂q - d/dt(∂L/∂q̇) = 0",
+        "category": "matematica",
+        "difficulty": "extreme"
+    },
+    {
+        "question": "Chi ha formulato la teoria della cromodinamica quantistica?",
+        "options": ["Murray Gell-Mann", "Richard Feynman", "Steven Weinberg"],
+        "correct": "Murray Gell-Mann",
+        "category": "fisica",
+        "difficulty": "extreme"
     }
+    
 ]
+
