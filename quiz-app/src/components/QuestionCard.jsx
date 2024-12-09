@@ -1,25 +1,39 @@
 import React, { useState, useEffect } from 'react';
-
 const QuestionCard = ({ question, options, onAnswer, timeLimit, language }) => {
   const [timeLeft, setTimeLeft] = useState(100);
   const [startTime] = useState(Date.now());
+  const [hasAnswered, setHasAnswered] = useState(false); // Nuovo stato per tracciare se è già stata data una risposta
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 0) {
-          clearInterval(timer);
-          return 0;
-        }
-        return Math.max(0, prev - (100 / (timeLimit * 10)));
-      });
-    }, 100);
+    let timer = null;
+    if (!hasAnswered) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 0 && !hasAnswered) {
+            clearInterval(timer);
+            setHasAnswered(true);
+            onAnswer(null); // Invia una sola risposta quando il tempo scade
+            return 0;
+          }
+          return Math.max(0, prev - (100 / (timeLimit * 10)));
+        });
+      }, 100);
+    }
 
-    return () => clearInterval(timer);
-  }, [question, timeLimit]);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [question, timeLimit, hasAnswered]);
+
+  // Reset hasAnswered quando cambia la domanda
+  useEffect(() => {
+    setHasAnswered(false);
+    setTimeLeft(100);
+  }, [question]);
 
   const handleAnswerClick = (answer) => {
-    if (timeLeft > 0) {
+    if (!hasAnswered && timeLeft > 0) {
+      setHasAnswered(true);
       const responseTime = Date.now() - startTime;
       onAnswer(answer, responseTime);
     }
@@ -54,7 +68,7 @@ const QuestionCard = ({ question, options, onAnswer, timeLimit, language }) => {
               <button
                 key={index}
                 onClick={() => handleAnswerClick(option)}
-                disabled={timeLeft <= 0}
+                disabled={hasAnswered || timeLeft <= 0}
                 className="block w-full px-3 sm:px-4 py-2 sm:py-3 text-sm font-cyber text-white 
                          bg-custom-purple hover:bg-custom-purple/80 rounded-lg transition-all
                          border border-white/20 shadow-md hover:scale-105 transform-gpu
@@ -63,7 +77,7 @@ const QuestionCard = ({ question, options, onAnswer, timeLimit, language }) => {
               />
             ))}
           </div>
-          {timeLeft <= 0 && (
+          {timeLeft <= 0 && !hasAnswered && (
             <p className="text-red-500 text-center mt-4 font-cyber">
               {language === 'it' ? 'Tempo Scaduto!' : 'Time\'s Up!'}
             </p>
