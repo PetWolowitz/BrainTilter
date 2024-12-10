@@ -2,23 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ArcadeClassic Font */
 @font-face {
-    font-family: 'Cyber-Netic';
-    src: url('/fonts/CYBERNETIC.otf') format('truetype');
+    font-family: 'ArcadeClassic';
+    src: url('./assets/fonts/Arcadepix Plus.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+/* DigitalArcade Font */
+@font-face {
+    font-family: 'DigitalArcade';
+    src: url('./assets/fonts/DigitalArcade.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
-@font-face {
-    font-family: 'Cyber-BoldBook';
-    src: url('/fonts/Cyber-BoldBook.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
+/* Styling classes */
 .title-font {
-    font-family: 'Cyber-BoldBook', sans-serif;
+    font-family: 'DigitalArcade', sans-serif;
     text-shadow: 0 0 10px rgba(183, 57, 211, 0.5),
-    0 0 20px rgba(183, 57, 211, 0.3),
-    0 0 30px rgba(183, 57, 211, 0.2);
+                 0 0 20px rgba(183, 57, 211, 0.3),
+                 0 0 30px rgba(183, 57, 211, 0.2);
+}
+
+.arcade-font {
+    font-family: 'ArcadeClassic', sans-serif;
+    color: #ff00ff;
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.5),
+                 0 0 20px rgba(255, 0, 255, 0.3),
+                 0 0 30px rgba(255, 0, 255, 0.2);
 }

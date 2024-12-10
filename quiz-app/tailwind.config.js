@@ -7,10 +7,14 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'cyber': ['Cyber-Bold', 'sans-serif'],
+        digital: ['DigitalArcade', 'sans-serif'], // For DigitalArcade font
+        arcade: ['ArcadeClassic', 'sans-serif'], // For ArcadeClassic font
+      },
+      textShadow: {
+        neon: '0 0 10px rgba(183, 57, 211, 0.5), 0 0 20px rgba(183, 57, 211, 0.3), 0 0 30px rgba(183, 57, 211, 0.2)', // Add text shadow
       },
       colors: {
-        'custom-purple': '#b739d3',
+        'custom-purple': '#b739d3', // Custom color for buttons and accents
       },
       animation: {
         'slideUp': 'slideUp 0.5s ease-out forwards',
@@ -55,8 +59,10 @@ export default {
           '50%': { transform: 'scale(1.1)' },
           '100%': { transform: 'scale(1)' },
         },
-      }
+      },
     },
   },
-  plugins: [],
-}
+  plugins: [
+    require('tailwindcss-textshadow'), // Plugin for text shadow if not already installed
+  ],
+};

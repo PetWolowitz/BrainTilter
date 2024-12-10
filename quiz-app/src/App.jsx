@@ -5,17 +5,28 @@ import QuestionCard from './components/QuestionCard';
 import GameOver from './components/GameOver';
 import ErrorCounter from './components/ErrorCounter';
 import questionsLocal from './data/questions.json';
+import BronzeRookie from './assets/bronze-rookie.svg';
+import BronzeMaster from './assets/bronze-master.svg';
+import SilverRookie from './assets/silver-rookie.svg';
+import SilverMaster from './assets/silver-master.svg';
+import GoldRookie from './assets/gold-rookie.svg';
+import GoldMaster from './assets/gold-master.svg';
+import EliteRookie from './assets/elite-rookie.svg';
+import EliteMaster from './assets/elite-master.svg';
+import CorrectIcon from './assets/correct.svg';
+import WrongIcon from './assets/wrong.svg';
+import './App.css';
 
 // Configurazione livelli
 const GAME_LEVELS = [
-  { id: 1, difficulty: 'easy', level: 1, reward: '🥉 Bronze Rookie', timeLimit: 10, requiredScore: 3, totalQuestions: 5 },
-  { id: 2, difficulty: 'easy', level: 2, reward: '🎯 Bronze Master', timeLimit: 10, requiredScore: 3, totalQuestions: 5 },
-  { id: 3, difficulty: 'medium', level: 1, reward: '🥈 Silver Rookie', timeLimit: 25, requiredScore: 3, totalQuestions: 5 },
-  { id: 4, difficulty: 'medium', level: 2, reward: '⚡ Silver Master', timeLimit: 25, requiredScore: 3, totalQuestions: 5 },
-  { id: 5, difficulty: 'hard', level: 1, reward: '🏆 Gold Rookie', timeLimit: 45, requiredScore: 3, totalQuestions: 5 },
-  { id: 6, difficulty: 'hard', level: 2, reward: '💎 Gold Master', timeLimit: 45, requiredScore: 3, totalQuestions: 5 },
-  { id: 7, difficulty: 'extreme', level: 1, reward: '👑 Elite Rookie', timeLimit: 60, requiredScore: 3, totalQuestions: 5 },
-  { id: 8, difficulty: 'extreme', level: 2, reward: '🌟 Elite Master', timeLimit: 60, requiredScore: 3, totalQuestions: 5 }
+  { id: 1, difficulty: 'easy', level: 1, reward: BronzeRookie, timeLimit: 10, requiredScore: 3, totalQuestions: 5 },
+  { id: 2, difficulty: 'easy', level: 2, reward: BronzeMaster, timeLimit: 10, requiredScore: 3, totalQuestions: 5 },
+  { id: 3, difficulty: 'medium', level: 1, reward: SilverRookie, timeLimit: 25, requiredScore: 3, totalQuestions: 5 },
+  { id: 4, difficulty: 'medium', level: 2, reward: SilverMaster, timeLimit: 25, requiredScore: 3, totalQuestions: 5 },
+  { id: 5, difficulty: 'hard', level: 1, reward: GoldRookie, timeLimit: 45, requiredScore: 3, totalQuestions: 5 },
+  { id: 6, difficulty: 'hard', level: 2, reward: GoldMaster, timeLimit: 45, requiredScore: 3, totalQuestions: 5 },
+  { id: 7, difficulty: 'extreme', level: 1, reward: EliteRookie, timeLimit: 60, requiredScore: 3, totalQuestions: 5 },
+  { id: 8, difficulty: 'extreme', level: 2, reward: EliteMaster, timeLimit: 60, requiredScore: 3, totalQuestions: 5 },
 ];
 
 // Funzione per gestire gli effetti sonori
@@ -45,21 +56,23 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [showLevelComplete, setShowLevelComplete] = useState(false);
   const [unlockedRewards, setUnlockedRewards] = useState([]);
-
   const [errorsPerDifficulty, setErrorsPerDifficulty] = useState({
     easy: 0,
     medium: 0,
     hard: 0,
-    extreme: 0
+    extreme: 0,
   });
   const [showGameOver, setShowGameOver] = useState(false);
   const [difficultyScore, setDifficultyScore] = useState(0);
   const [showFeedback, setShowFeedback] = useState(null);
 
+  // Set per le domande già usate
   const usedQuestions = new Set();
 
+  // Funzione per ottenere le informazioni del livello corrente
   const getCurrentLevelInfo = () => GAME_LEVELS[currentLevel - 1];
 
+  // Funzione per caricare le domande
   const loadQuestions = async () => {
     setLoading(true);
     try {
@@ -76,7 +89,7 @@ const App = () => {
         setQuestions(
           selectedQuestions.map((q) => ({
             ...q,
-            options: shuffleArray(q.options)
+            options: shuffleArray(q.options),
           }))
         );
       } else {
@@ -88,7 +101,7 @@ const App = () => {
           question: item.question,
           options: shuffleArray([...item.incorrect_answers, item.correct_answer]),
           correct: item.correct_answer,
-          difficulty: levelInfo.difficulty
+          difficulty: levelInfo.difficulty,
         }));
 
         setQuestions(formattedQuestions);
@@ -104,72 +117,87 @@ const App = () => {
     loadQuestions();
   }, [language, currentLevel]);
 
+  // Funzione per gestire la risposta
   const handleAnswer = (answer) => {
+    // Verifica se ci sono domande valide
+    if (!questions[currentQuestion]) {
+      console.warn("Domanda non trovata. Possibile problema con il caricamento delle domande.");
+      return;
+    }
+  
     const levelInfo = getCurrentLevelInfo();
     const isCorrect = answer === questions[currentQuestion]?.correct;
-
+  
+    // Riproduce il suono
     playSound(isCorrect ? 'success' : 'error');
-
-    if (isCorrect) {
-      setDifficultyScore((prev) => prev + 1);
-      setScore((prev) => prev + 1);
-    } else {
-      const newErrors = {
-        ...errorsPerDifficulty,
-        [levelInfo.difficulty]: errorsPerDifficulty[levelInfo.difficulty] + 1
-      };
-      setErrorsPerDifficulty(newErrors);
-
-      if (newErrors[levelInfo.difficulty] >= 2) {
-        playSound('game-over');
-        setShowGameOver(true);
-        return;
-      }
-    }
-
-    setTotalQuestionsAnswered((prev) => prev + 1);
-    setShowFeedback({
-      type: isCorrect ? 'correct' : 'wrong',
-      message: isCorrect
-        ? language === 'it'
-          ? 'Corretto! 🎯'
-          : 'Correct! 🎯'
-        : language === 'it'
-        ? 'Sbagliato! 😕'
-        : 'Wrong! 😕'
-    });
-
-    setTimeout(() => setShowFeedback(null), 1000);
-
-    if (currentQuestion + 1 < questions.length) {
-      setCurrentQuestion((prev) => prev + 1);
-    } else {
-      if (difficultyScore >= levelInfo.requiredScore) {
-        setShowLevelComplete(true);
-        if (!unlockedRewards.includes(levelInfo.reward)) {
-          setUnlockedRewards((prev) => [...prev, levelInfo.reward]);
-        }
-
-        setTimeout(() => {
-          if (currentLevel < GAME_LEVELS.length) {
-            setCurrentLevel((prev) => prev + 1);
-            setDifficultyScore(0);
-            setCurrentQuestion(0);
-            setErrorsPerDifficulty((prev) => ({
-              ...prev,
-              [levelInfo.difficulty]: 0
-            }));
-            setShowLevelComplete(false);
-          } else {
-            setShowResult(true);
-          }
-        }, 2000);
+  
+    setTimeout(() => {
+      // Aggiorna lo stato solo dopo un timeout per evitare conflitti di rendering
+      if (isCorrect) {
+        setDifficultyScore((prev) => prev + 1);
+        setScore((prev) => prev + 1);
       } else {
-        setShowResult(true);
+        const newErrors = {
+          ...errorsPerDifficulty,
+          [levelInfo.difficulty]: errorsPerDifficulty[levelInfo.difficulty] + 1,
+        };
+        setErrorsPerDifficulty(newErrors);
+  
+        if (newErrors[levelInfo.difficulty] >= 2) {
+          // Gioco terminato
+          playSound('game-over');
+          setShowGameOver(true);
+          return;
+        }
       }
-    }
+  
+      setTotalQuestionsAnswered((prev) => prev + 1);
+      setShowFeedback({
+        type: isCorrect ? 'correct' : 'wrong',
+        message: isCorrect
+          ? language === 'it'
+            ? 'Corretto!'
+            : 'Correct!'
+          : language === 'it'
+          ? 'Sbagliato!'
+          : 'Wrong!',
+      });
+  
+      setTimeout(() => setShowFeedback(null), 1000);
+  
+      if (currentQuestion + 1 < questions.length) {
+        setCurrentQuestion((prev) => prev + 1);
+      } else {
+        if (difficultyScore >= levelInfo.requiredScore) {
+          setShowLevelComplete(true);
+          if (!unlockedRewards.includes(levelInfo.reward)) {
+            setUnlockedRewards((prev) => [...prev, levelInfo.reward]);
+          }
+  
+          setTimeout(() => {
+            if (currentLevel < GAME_LEVELS.length) {
+              setCurrentLevel((prev) => prev + 1);
+              setDifficultyScore(0);
+              setCurrentQuestion(0);
+              setErrorsPerDifficulty((prev) => ({
+                ...prev,
+                [levelInfo.difficulty]: 0,
+              }));
+              setShowLevelComplete(false);
+            } else {
+              setShowResult(true);
+            }
+          }, 2000);
+        } else {
+          setShowResult(true);
+        }
+      }
+    }, 0); // Utilizza un timeout di 0ms per spostare l'aggiornamento dello stato fuori dal ciclo di rendering corrente
   };
-
+  
+  
+  
+  // Funzione per ricominciare il quiz
   const restartQuiz = () => {
     setCurrentLevel(1);
     setCurrentQuestion(0);
@@ -183,19 +211,35 @@ const App = () => {
       easy: 0,
       medium: 0,
       hard: 0,
-      extreme: 0
+      extreme: 0,
     });
     usedQuestions.clear();
     setUnlockedRewards([]);
   };
 
+  // Funzione per cambiare lingua
   const toggleLanguage = () => {
     setLanguage((prev) => (prev === 'it' ? 'en' : 'it'));
     restartQuiz();
   };
 
+  // Stato per i punteggi migliori
+  const [topScores, setTopScores] = useState(() => {
+    const saved = localStorage.getItem('leaderboard');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Funzione per salvare il punteggio
+  const saveScore = (playerData) => {
+    const newScores = [...topScores, playerData]
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10);
+    setTopScores(newScores);
+    localStorage.setItem('leaderboard', JSON.stringify(newScores));
+  };
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative font-arcade">
       <video
         className="fixed inset-0 w-full h-full object-cover"
         autoPlay
@@ -208,14 +252,18 @@ const App = () => {
 
       <button
         onClick={toggleLanguage}
-        className="fixed top-4 right-4 px-4 py-2 rounded-lg bg-custom-purple text-white hover:bg-custom-purple/80 transition-colors backdrop-blur-sm font-cyber text-lg shadow-lg border border-white/20 z-50"
+        className="fixed top-4 right-4 px-4 py-2 rounded-lg bg-custom-purple 
+                 text-white hover:bg-custom-purple/80 transition-colors backdrop-blur-sm 
+                 font-arcade text-lg shadow-lg border border-white/20 z-50"
       >
-        {language === 'it' ? 'EN' : 'IT'}
+        {language === 'it' ? '🇬🇧 EN' : '🇮🇹 IT'}
       </button>
 
-      <div className="fixed top-4 left-4 px-4 py-2 rounded-lg bg-custom-purple/50 backdrop-blur-sm border border-white/20 z-50">
-        <p className="text-white font-cyber">
-          {language === 'it' ? 'Livello' : 'Level'} {currentLevel} ({getCurrentLevelInfo().difficulty.toUpperCase()}).
+      <div className="fixed top-4 left-4 px-4 py-2 rounded-lg bg-custom-purple/50 
+                    backdrop-blur-sm border border-white/20 z-50">
+        <p className="text-white font-arcade">
+          {language === 'it' ? 'Livello' : 'Level'} {currentLevel} (
+          {getCurrentLevelInfo().difficulty.toUpperCase()})
         </p>
         <ErrorCounter
           currentErrors={errorsPerDifficulty[getCurrentLevelInfo().difficulty]}
@@ -225,84 +273,34 @@ const App = () => {
       </div>
 
       <div className="w-full max-w-4xl text-center mb-8">
-        <motion.h1
-          className="text-4xl md:text-6xl font-cyber text-white animate-glitch title-font mb-4"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-        >
+        <h1 className="text-6xl font-digital text-white text-shadow-title title-font">
           Brain Tilter
-        </motion.h1>
+        </h1>
       </div>
 
       <AnimatePresence mode="wait">
         {loading ? (
-          <motion.div
-            key="loading"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="text-center backdrop-blur-md bg-white/10 rounded-xl p-6"
-          >
-            <p className="text-white text-lg font-cyber">
+          <div className="text-center backdrop-blur-md bg-white/10 rounded-xl p-6">
+            <p className="text-white text-lg font-arcade">
               {language === 'it' ? 'Caricamento...' : 'Loading...'}
             </p>
-          </motion.div>
+          </div>
         ) : showGameOver ? (
           <GameOver
             difficulty={getCurrentLevelInfo().difficulty}
             score={score}
             language={language}
             onRestart={restartQuiz}
+            onSaveScore={saveScore}
+            topScores={topScores}
           />
         ) : showLevelComplete ? (
-          <motion.div
-            key="level-complete"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            className="text-center backdrop-blur-md bg-white/10 rounded-xl p-6 border border-white/20"
-          >
-            <h2 className="text-3xl font-cyber mb-4 text-white">
+          <div className="text-center backdrop-blur-md bg-white/10 rounded-xl p-6 border border-white/20">
+            <h2 className="text-3xl font-arcade mb-4 text-white">
               {language === 'it' ? 'Livello Completato!' : 'Level Complete!'} 🎉
             </h2>
-            <motion.div
-              className="text-4xl mb-4"
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ repeat: Infinity, duration: 1 }}
-            >
-              {getCurrentLevelInfo().reward}
-            </motion.div>
-          </motion.div>
-        ) : showResult ? (
-          <motion.div
-            key="result"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="text-center backdrop-blur-md bg-white/10 rounded-xl p-6 border border-white/20"
-          >
-            <h2 className="text-3xl font-cyber mb-4 text-white">
-              {difficultyScore >= getCurrentLevelInfo().requiredScore
-                ? language === 'it'
-                  ? 'Hai Vinto!'
-                  : 'You Won!'
-                : language === 'it'
-                ? 'Riprova!'
-                : 'Try Again!'}
-            </h2>
-            <p className="text-xl mb-6 text-white font-cyber">
-              {language === 'it' ? 'Punteggio Totale' : 'Total Score'}: {score}
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={restartQuiz}
-              className="px-6 py-3 bg-custom-purple text-white rounded-lg hover:bg-custom-purple/80 transition-colors font-cyber"
-            >
-              {language === 'it' ? 'Ricomincia' : 'Play Again'}
-            </motion.button>
-          </motion.div>
+            <div className="text-4xl mb-4">{getCurrentLevelInfo().reward}</div>
+          </div>
         ) : questions[currentQuestion] ? (
           <QuestionCard
             question={questions[currentQuestion].question}
@@ -317,17 +315,18 @@ const App = () => {
       {showFeedback && (
         <motion.div
           initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
-          className={`fixed top-1/4 left-1/2 transform -translate-x-1/2 text-2xl font-cyber ${
-            showFeedback.type === 'correct' ? 'text-green-400' : 'text-red-400'
-          }`}
+          className="fixed top-1/4 left-1/2 transform -translate-x-1/2"
         >
-          {showFeedback.message}
+          <img
+            src={showFeedback.type === 'correct' ? CorrectIcon : WrongIcon}
+            alt={showFeedback.type}
+            className="w-20 h-20"
+          />
         </motion.div>
       )}
     </div>
   );
 };
-
 export default App;

@@ -59,18 +59,21 @@ Se il limite di errori è superato, il gioco termina.
 Game Over e Restart:
 
 Alla fine del gioco, l'utente può cliccare "Prova Ancora" per ricominciare dall'inizio.
+
 Struttura del Codice
 Componenti Principali:
 App.jsx: Contiene la logica del gioco, caricamento delle domande, gestione dei livelli e rendering delle schermate principali.
 QuestionCard.jsx: Visualizza le domande e le opzioni.
 GameOver.jsx: Schermata che appare quando il gioco termina.
 ErrorCounter.jsx: Mostra il numero di errori per il livello corrente.
+
 Modifiche Implementate
 Shuffle Migliorato:
 Algoritmo di shuffle per garantire casualità affidabile per domande e opzioni.
 Gestione Domande:
 Correzione di errori nel caricamento delle domande dal file JSON.
 Backup automatico delle domande locali in caso di errore nell'API.
+
 Fix Animazioni:
 Modificato lo z-index e il layout per evitare che le animazioni interferissero con i pulsanti.
 Gestione Multilingua:

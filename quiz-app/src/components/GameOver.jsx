@@ -1,74 +1,118 @@
-// components/GameOver.jsx
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 
-const GameOver = ({ onRestart, difficulty, score, language }) => {
+const GameOver = ({ onRestart, score, onSaveScore, topScores = [] }) => {
+  const [playerName, setPlayerName] = useState('');
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (playerName.trim()) {
+      onSaveScore({
+        name: playerName.toUpperCase(),
+        score,
+      });
+      setHasSubmitted(true);
+    }
+  };
+
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-black text-center font-arcade">
+      {/* Titolo Game Over */}
+      <motion.h1
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-[100px] mb-8 text-shadow-title"
+        style={{
+          color: '#00f7ff',
+        }}
       >
-        <div className="relative">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ 
-              duration: 2,
-              repeat: Infinity,
-              repeatType: "reverse" 
-            }}
-            className="absolute inset-0 bg-custom-purple/20 blur-3xl rounded-full"
-          />
-          
-          <motion.h1
-            initial={{ scale: 0, rotate: 180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ 
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-            }}
-            className="text-[120px] font-cyber text-custom-purple mb-8 text-center"
-            style={{
-              textShadow: `
-                0 0 20px #b739d3,
-                0 0 40px #b739d3,
-                0 0 80px #b739d3
-              `
-            }}
-          >
-            GAME OVER
-          </motion.h1>
+        GAME OVER
+      </motion.h1>
 
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-center mb-8"
-          >
-            <p className="text-white text-2xl font-cyber mb-2">
-              {language === 'it' ? 'Difficoltà' : 'Difficulty'}: {difficulty}
-            </p>
-            <p className="text-white text-2xl font-cyber">
-              {language === 'it' ? 'Punteggio Finale' : 'Final Score'}: {score}
-            </p>
-          </motion.div>
-
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={onRestart}
-            className="px-8 py-4 bg-custom-purple text-white rounded-lg font-cyber text-xl
-                     hover:bg-custom-purple/80 transition-all mx-auto block"
-          >
-            {language === 'it' ? 'Riprova' : 'Try Again'}
-          </motion.button>
+      {/* Se l'utente non ha inserito il nome */}
+      {!hasSubmitted ? (
+        <div className="text-center mb-8">
+          <p className="text-[40px] mb-4 text-shadow-title" style={{ color: '#ff00ff' }}>
+            SCORE: {score}
+          </p>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="text"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value.toUpperCase())}
+              className="w-64 bg-transparent border-b-4 border-[#ff00ff] text-[#ff00ff] 
+                       p-4 text-center text-3xl tracking-wider focus:outline-none"
+              maxLength={10}
+              placeholder="ENTER YOUR NAME"
+              autoFocus
+            />
+            <button
+              type="submit"
+              className="block w-full text-3xl mt-6 cursor-pointer
+                       hover:scale-110 active:scale-95 transition-transform text-shadow-title"
+              style={{
+                color: '#00f7ff',
+              }}
+            >
+              SUBMIT
+            </button>
+          </form>
         </div>
-      </motion.div>
-    </AnimatePresence>
+      ) : (
+        // Se l'utente ha inserito il nome
+        <div className="text-center">
+          {/* Bottoni per Riprova e Classifica */}
+          <div className="flex gap-4 mb-8">
+            <button
+              onClick={onRestart}
+              className="text-3xl cursor-pointer
+                       hover:scale-110 active:scale-95 transition-transform text-shadow-title"
+              style={{
+                color: '#ff00ff',
+              }}
+            >
+              RETRY
+            </button>
+            <button
+              onClick={() => setShowLeaderboard(true)}
+              className="text-3xl cursor-pointer
+                       hover:scale-110 active:scale-95 transition-transform text-shadow-title"
+              style={{
+                color: '#00f7ff',
+              }}
+            >
+              LEADERBOARD
+            </button>
+          </div>
+
+          {/* Classifica */}
+          {showLeaderboard && (
+            <div className="space-y-2">
+              <h2 className="text-[40px] mb-6 text-shadow-title" style={{ color: '#ff00ff' }}>
+                LEADERBOARD
+              </h2>
+              {topScores.map((entry, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between gap-8"
+                  style={{
+                    color: entry.name === playerName ? '#ff00ff' : '#00f7ff',
+                    textShadow: entry.name === playerName
+                      ? '0 0 20px rgba(255, 0, 255, 0.8)'
+                      : '0 0 20px rgba(0, 247, 255, 0.8)',
+                  }}
+                >
+                  <span className="text-2xl">{entry.name}</span>
+                  <span className="text-2xl">{entry.score}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
