@@ -79,7 +79,7 @@ const QuestionCard = ({ question, options, onAnswer, timeLimit, language }) => {
         onTouchStart={() => setRotation({ x: 0, y: 0 })}
       >
         <div
-          className="absolute inset-0 rounded-xl bg-black/80 border-2 border-white/30 
+          className="absolute inset-0 rounded-xl bg-black/35 border-2 border-white/30 
                    shadow-lg transition-all duration-300 ease-out"
           style={{
             transform: `

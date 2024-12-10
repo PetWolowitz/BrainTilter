@@ -17,7 +17,6 @@ import CorrectIcon from './assets/correct.svg';
 import WrongIcon from './assets/wrong.svg';
 import './App.css';
 
-// Configurazione livelli
 const GAME_LEVELS = [
   { id: 1, difficulty: 'easy', level: 1, reward: BronzeRookie, timeLimit: 10, requiredScore: 3, totalQuestions: 5 },
   { id: 2, difficulty: 'easy', level: 2, reward: BronzeMaster, timeLimit: 10, requiredScore: 3, totalQuestions: 5 },
@@ -29,14 +28,12 @@ const GAME_LEVELS = [
   { id: 8, difficulty: 'extreme', level: 2, reward: EliteMaster, timeLimit: 60, requiredScore: 3, totalQuestions: 5 },
 ];
 
-// Funzione per gestire gli effetti sonori
 const playSound = (soundName) => {
   const audio = new Audio(`/sounds/${soundName}.mp3`);
   audio.volume = 0.5;
   audio.play().catch((error) => console.log('Audio play failed:', error));
 };
 
-// Shuffle array con casualità
 const shuffleArray = (array) => {
   return array
     .map((item) => ({ item, sort: Math.random() }))
@@ -45,7 +42,6 @@ const shuffleArray = (array) => {
 };
 
 const App = () => {
-  // Stati base
   const [language, setLanguage] = useState('it');
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -66,13 +62,10 @@ const App = () => {
   const [difficultyScore, setDifficultyScore] = useState(0);
   const [showFeedback, setShowFeedback] = useState(null);
 
-  // Set per le domande già usate
   const usedQuestions = new Set();
 
-  // Funzione per ottenere le informazioni del livello corrente
   const getCurrentLevelInfo = () => GAME_LEVELS[currentLevel - 1];
 
-  // Funzione per caricare le domande
   const loadQuestions = async () => {
     setLoading(true);
     try {
@@ -117,22 +110,18 @@ const App = () => {
     loadQuestions();
   }, [language, currentLevel]);
 
-  // Funzione per gestire la risposta
   const handleAnswer = (answer) => {
-    // Verifica se ci sono domande valide
     if (!questions[currentQuestion]) {
       console.warn("Domanda non trovata. Possibile problema con il caricamento delle domande.");
       return;
     }
-  
+
     const levelInfo = getCurrentLevelInfo();
     const isCorrect = answer === questions[currentQuestion]?.correct;
-  
-    // Riproduce il suono
+
     playSound(isCorrect ? 'success' : 'error');
-  
+
     setTimeout(() => {
-      // Aggiorna lo stato solo dopo un timeout per evitare conflitti di rendering
       if (isCorrect) {
         setDifficultyScore((prev) => prev + 1);
         setScore((prev) => prev + 1);
@@ -142,15 +131,14 @@ const App = () => {
           [levelInfo.difficulty]: errorsPerDifficulty[levelInfo.difficulty] + 1,
         };
         setErrorsPerDifficulty(newErrors);
-  
+
         if (newErrors[levelInfo.difficulty] >= 2) {
-          // Gioco terminato
           playSound('game-over');
           setShowGameOver(true);
           return;
         }
       }
-  
+
       setTotalQuestionsAnswered((prev) => prev + 1);
       setShowFeedback({
         type: isCorrect ? 'correct' : 'wrong',
@@ -162,9 +150,9 @@ const App = () => {
           ? 'Sbagliato!'
           : 'Wrong!',
       });
-  
+
       setTimeout(() => setShowFeedback(null), 1000);
-  
+
       if (currentQuestion + 1 < questions.length) {
         setCurrentQuestion((prev) => prev + 1);
       } else {
@@ -173,7 +161,7 @@ const App = () => {
           if (!unlockedRewards.includes(levelInfo.reward)) {
             setUnlockedRewards((prev) => [...prev, levelInfo.reward]);
           }
-  
+
           setTimeout(() => {
             if (currentLevel < GAME_LEVELS.length) {
               setCurrentLevel((prev) => prev + 1);
@@ -192,12 +180,9 @@ const App = () => {
           setShowResult(true);
         }
       }
-    }, 0); // Utilizza un timeout di 0ms per spostare l'aggiornamento dello stato fuori dal ciclo di rendering corrente
+    }, 0);
   };
-  
-  
-  
-  // Funzione per ricominciare il quiz
+
   const restartQuiz = () => {
     setCurrentLevel(1);
     setCurrentQuestion(0);
@@ -217,19 +202,16 @@ const App = () => {
     setUnlockedRewards([]);
   };
 
-  // Funzione per cambiare lingua
   const toggleLanguage = () => {
     setLanguage((prev) => (prev === 'it' ? 'en' : 'it'));
     restartQuiz();
   };
 
-  // Stato per i punteggi migliori
   const [topScores, setTopScores] = useState(() => {
     const saved = localStorage.getItem('leaderboard');
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Funzione per salvare il punteggio
   const saveScore = (playerData) => {
     const newScores = [...topScores, playerData]
       .sort((a, b) => b.score - a.score)
@@ -263,7 +245,7 @@ const App = () => {
                     backdrop-blur-sm border border-white/20 z-50">
         <p className="text-white font-arcade">
           {language === 'it' ? 'Livello' : 'Level'} {currentLevel} (
-          {getCurrentLevelInfo().difficulty.toUpperCase()})
+          {getCurrentLevelInfo().difficulty.toUpperCase()} )
         </p>
         <ErrorCounter
           currentErrors={errorsPerDifficulty[getCurrentLevelInfo().difficulty]}
@@ -273,11 +255,15 @@ const App = () => {
       </div>
 
       <div className="w-full max-w-4xl text-center mb-8">
-        <h1 className="text-6xl font-digital text-white  ">
+        <motion.h1
+          className="text-6xl font-digital text-white"
+          initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
+          animate={{ scale: 1, rotate: 0, opacity: 1 }}
+          transition={{ duration: 1, type: 'spring' }}
+        >
           Brain Tilter
-        </h1>
+        </motion.h1>
       </div>
-      
 
       <AnimatePresence mode="wait">
         {loading ? (
@@ -300,7 +286,7 @@ const App = () => {
             <h2 className="text-3xl font-arcade mb-4 text-white">
               {language === 'it' ? 'Livello Completato!' : 'Level Complete!'} 🎉
             </h2>
-            <div className="text-4xl mb-4">{getCurrentLevelInfo().reward}</div>
+            <img src={getCurrentLevelInfo().reward} alt="Reward" className="mx-auto w-24 h-24" />
           </div>
         ) : questions[currentQuestion] ? (
           <QuestionCard
@@ -330,4 +316,5 @@ const App = () => {
     </div>
   );
 };
+
 export default App;

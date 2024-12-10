@@ -18,7 +18,7 @@ const GameOver = ({ onRestart, score, onSaveScore, topScores = [] }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-black text-center font-arcade">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/85 text-center font-arcade">
       {/* Titolo Game Over */}
       <motion.h1
         initial={{ opacity: 0, y: -50 }}
