@@ -255,15 +255,15 @@ const App = () => {
       </div>
 
       <div className="w-full max-w-4xl text-center mb-8">
-        <motion.h1
-          className="text-6xl font-digital text-white"
-          initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
-          animate={{ scale: 1, rotate: 0, opacity: 1 }}
-          transition={{ duration: 1, type: 'spring' }}
-        >
-          Brain Tilter
-        </motion.h1>
-      </div>
+  <motion.h1
+    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-digital text-white"
+    initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
+    animate={{ scale: 1, rotate: 0, opacity: 1 }}
+    transition={{ duration: 1, type: 'spring' }}
+  >
+    Brain Tilter
+  </motion.h1>
+</div>
 
       <AnimatePresence mode="wait">
         {loading ? (
