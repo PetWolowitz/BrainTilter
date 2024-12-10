@@ -256,7 +256,7 @@ const App = () => {
                  text-white hover:bg-custom-purple/80 transition-colors backdrop-blur-sm 
                  font-arcade text-lg shadow-lg border border-white/20 z-50"
       >
-        {language === 'it' ? '🇬🇧 EN' : '🇮🇹 IT'}
+        {language === 'it' ? 'EN' : 'IT'}
       </button>
 
       <div className="fixed top-4 left-4 px-4 py-2 rounded-lg bg-custom-purple/50 
@@ -273,10 +273,11 @@ const App = () => {
       </div>
 
       <div className="w-full max-w-4xl text-center mb-8">
-        <h1 className="text-6xl font-digital text-white text-shadow-title title-font">
+        <h1 className="text-6xl font-digital text-white  ">
           Brain Tilter
         </h1>
       </div>
+      
 
       <AnimatePresence mode="wait">
         {loading ? (

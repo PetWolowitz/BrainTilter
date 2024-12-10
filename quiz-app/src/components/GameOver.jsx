@@ -23,7 +23,7 @@ const GameOver = ({ onRestart, score, onSaveScore, topScores = [] }) => {
       <motion.h1
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-[100px] mb-8 text-shadow-title"
+        className="text-[100px] mb-8 text-shadow-title font-arcade"
         style={{
           color: '#00f7ff',
         }}
@@ -34,7 +34,7 @@ const GameOver = ({ onRestart, score, onSaveScore, topScores = [] }) => {
       {/* Se l'utente non ha inserito il nome */}
       {!hasSubmitted ? (
         <div className="text-center mb-8">
-          <p className="text-[40px] mb-4 text-shadow-title" style={{ color: '#ff00ff' }}>
+          <p className="text-[40px] mb-4 font-arcade title-font text-shadow-neon" style={{ color: '#ff00ff' }}>
             SCORE: {score}
           </p>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -78,7 +78,7 @@ const GameOver = ({ onRestart, score, onSaveScore, topScores = [] }) => {
             <button
               onClick={() => setShowLeaderboard(true)}
               className="text-3xl cursor-pointer
-                       hover:scale-110 active:scale-95 transition-transform text-shadow-title"
+                       hover:scale-110 active:scale-95 transition-transform text-shadow-neon font-arcade"
               style={{
                 color: '#00f7ff',
               }}
@@ -90,7 +90,7 @@ const GameOver = ({ onRestart, score, onSaveScore, topScores = [] }) => {
           {/* Classifica */}
           {showLeaderboard && (
             <div className="space-y-2">
-              <h2 className="text-[40px] mb-6 text-shadow-title" style={{ color: '#ff00ff' }}>
+              <h2 className="text-[40px] font-arcade mb-6 text-shadow-title" style={{ color: '#ff00ff' }}>
                 LEADERBOARD
               </h2>
               {topScores.map((entry, index) => (

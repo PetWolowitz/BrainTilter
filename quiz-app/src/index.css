@@ -5,28 +5,32 @@
 /* ArcadeClassic Font */
 @font-face {
     font-family: 'ArcadeClassic';
-    src: url('./assets/fonts/Arcadepix Plus.ttf') format('truetype');
+    src: url('/fonts/ArcadeClassic.woff2') format('woff2'),
+         url('/fonts/ArcadeClassic.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
+
 /* DigitalArcade Font */
 @font-face {
     font-family: 'DigitalArcade';
-    src: url('./assets/fonts/DigitalArcade.ttf') format('truetype');
+    /* src: url('/fonts/DigitalArcade.woff2') format('woff2'), */
+       src:  url('/fonts/ArcadepixPlus.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-}
+    font-display: swap;
+}s
 
-/* Styling classes */
 .title-font {
-    font-family: 'DigitalArcade', sans-serif;
+    font-family: 'DigitalArcade', monospace;
     text-shadow: 0 0 10px rgba(183, 57, 211, 0.5),
                  0 0 20px rgba(183, 57, 211, 0.3),
                  0 0 30px rgba(183, 57, 211, 0.2);
 }
 
 .arcade-font {
-    font-family: 'ArcadeClassic', sans-serif;
+    font-family: 'ArcadeClassic', monospace;
     color: #ff00ff;
     text-shadow: 0 0 10px rgba(255, 0, 255, 0.5),
                  0 0 20px rgba(255, 0, 255, 0.3),

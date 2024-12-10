@@ -7,11 +7,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        digital: ['DigitalArcade', 'sans-serif'], // For DigitalArcade font
-        arcade: ['ArcadeClassic', 'sans-serif'], // For ArcadeClassic font
+        digital: ['DigitalArcade'], // For DigitalArcade font
+        arcade: ['ArcadeClassic'], // For ArcadeClassic font
       },
       textShadow: {
-        neon: '0 0 10px rgba(183, 57, 211, 0.5), 0 0 20px rgba(183, 57, 211, 0.3), 0 0 30px rgba(183, 57, 211, 0.2)', // Add text shadow
+        neon: '0 0 10px rgba(183, 57, 211, 0.5), 0 0 10px rgba(183, 57, 211, 0.3), 0 0 10px rgba(183, 57, 211, 0.2)', // Add text shadow
       },
       colors: {
         'custom-purple': '#b739d3', // Custom color for buttons and accents
