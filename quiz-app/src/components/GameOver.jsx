@@ -33,52 +33,53 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
 
   // Funzione per gestire l'invio del punteggio
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (playerName.trim()) {
-      try {
-        const response = await fetch('http://localhost:5000/leaderboard', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: playerName.toUpperCase(),
-            score,
-          }),
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        setHasSubmitted(true);
-      } catch (error) {
-        console.error('Errore nell\'invio del punteggio:', error);
+  e.preventDefault();
+  if (playerName.trim()) {
+    try {
+      const response = await fetch('http://localhost:5000/leaderboard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: playerName.toUpperCase(),
+          score,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
+      setHasSubmitted(true);
+    } catch (error) {
+      console.error('Errore nell\'invio del punteggio:', error);
     }
-  };
-  
+  }
+};
+
 
   // Resto del componente GameOver
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/85 text-center font-arcade">
-      <motion.h1
-        initial={{ opacity: 0, y: -50 }}
-        animate={{
-          opacity: [0, 1, 0.8, 1],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{
-          duration: 2,
-          times: [0, 0.3, 0.6, 1],
-          repeat: Infinity,
-          ease: 'linear',
-        }}
-        className="text-[100px] mb-8 text-shadow-title font-arcade"
-        style={{
-          color: '#00f7ff',
-        }}
-      >
-        GAME OVER
-      </motion.h1>
+    <div className="fixed inset-0 flex flex-col items-center bg-black/85 text-center font-arcade overflow-y-scroll">
+  <motion.h1
+    initial={{ opacity: 0, y: -50 }}
+    animate={{
+      opacity: [0, 1, 0.8, 1],
+      scale: [1, 1.1, 1],
+    }}
+    transition={{
+      duration: 2,
+      times: [0, 0.3, 0.6, 1],
+      repeat: Infinity,
+      ease: 'linear',
+    }}
+    className="text-[100px] mt-8 text-shadow-title font-arcade relative flex flex-col items-center 
+               sticky top-10 z-10 bg-black/90 py-12" 
+    style={{
+      color: '#00f7ff',
+    }}
+  >
+    GAME OVER
+  </motion.h1>
 
       {!hasSubmitted ? (
         <div className="text-center mb-8">
