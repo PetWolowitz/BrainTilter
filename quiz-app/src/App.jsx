@@ -304,17 +304,18 @@ const App = () => {
 
       {showFeedback && (
         <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 50 }}
-          className="fixed top-1/4 left-1/2 transform -translate-x-1/2"
-        >
-          <img
-            src={showFeedback.type === 'correct' ? CorrectIcon : WrongIcon}
-            alt={showFeedback.type}
-            className="w-20 h-20"
-          />
-        </motion.div>
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}    // Solo fade out, senza spostamenti o rotazioni
+        transition={{ duration: 0.5 }}
+        className="fixed top-1/2 left-1/4 transform -translate-x-1/2"
+      >
+        <img
+          src={showFeedback.type === 'correct' ? CorrectIcon : WrongIcon}
+          alt={showFeedback.type}
+          className="w-[5vw] h-[5vw]" // Dimensioni in base al viewport, restano proporzionate su ogni schermo
+        />
+      </motion.div>
       )}
     </div>
   );
