@@ -1,19 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import StarIcon from '../assets/star.svg';
+import TrophyIcon from '../assets/trophy.svg';
+import BrainIcon from '../assets/brain.svg';
+import MatrixIcon from '../assets/matrix.svg';
+import NinjaIcon from '../assets/ninja.svg';
 
-
-// Aggiungiamo useState e useEffect per gestire lo stato del componente
-const GameOver = ({ onRestart, score, onSaveScore }) => {
+const Victory = ({ onRestart, score, onSaveScore }) => {
   const [playerName, setPlayerName] = useState('');
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [topScores, setTopScores] = useState([]); // Stato per i punteggi
+  const [topScores, setTopScores] = useState([]);
 
+  const victoryQuotes = [
+    { text: "YOU'RE BREATHTAKING!", icon: StarIcon },
+    { text: "A WINNER IS YOU!", icon: TrophyIcon },
+    { text: "ACHIEVEMENT UNLOCKED: GENIUS!", icon: BrainIcon },
+    { text: "YOU'VE HACKED THE MATRIX!", icon: MatrixIcon },
+    { text: "CONGRATULATIONS, YOU'RE OFFICIALLY A BRAIN TILTER!", icon: NinjaIcon }
+  ];
 
-  // Funzione per caricare la leaderboard dal server
+  const quoteRef = useRef(null);
+  if (!quoteRef.current) {
+    quoteRef.current = victoryQuotes[Math.floor(Math.random() * victoryQuotes.length)];
+  }
+  const currentQuote = quoteRef.current;
+
   const fetchLeaderboard = async () => {
     try {
-      const response = await fetch('http://localhost:5000/leaderboard'); // Cambiato endpoint
+      const response = await fetch('http://localhost:5000/leaderboard');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -30,62 +45,64 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
     }
   }, [showLeaderboard]);
 
-
-  // Funzione per gestire l'invio del punteggio
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (playerName.trim()) {
-    try {
-      const response = await fetch('http://localhost:5000/leaderboard', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: playerName.toUpperCase(),
-          score,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+    e.preventDefault();
+    if (playerName.trim()) {
+      try {
+        const response = await fetch('http://localhost:5000/leaderboard', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: playerName.toUpperCase(),
+            score,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        setHasSubmitted(true);
+      } catch (error) {
+        console.error('Errore nell\'invio del punteggio:', error);
       }
-      setHasSubmitted(true);
-    } catch (error) {
-      console.error('Errore nell\'invio del punteggio:', error);
     }
-  }
-};
+  };
 
-
-  // Resto del componente GameOver
   return (
-    <div className="fixed inset-0 flex flex-col items-center bg-black/90 text-center font-arcade  overflow-y-auto">
-      <motion.h1
+    <div className="fixed inset-0 flex flex-col items-center bg-black/90 text-center font-arcade overflow-y-auto">
+      <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{
-        opacity: [0, 1, 0.8, 1],
-        scale: [1, 1.1, 1],
-      }}
+          opacity: [0, 1, 0.8, 1],
+          scale: [1, 1.1, 1],
+        }}
         transition={{
           duration: 2,
           times: [0, 0.3, 0.6, 1],
           repeat: Infinity,
           ease: 'linear',
-      }}
-        className="text-[100px] mt-20 text-shadow-title font-arcade relative flex flex-col items-center 
+        }}
+        className="text-[40px] mt-4 text-shadow-title font-arcade relative flex flex-col items-center 
                     sticky top-10 z-10 py-14" 
         style={{
           color: '#00ff00',
-          textShadow: '0 0 6px rgba(0, 255, 0, 0.7), 0 0 12px rgba(0, 255, 0, 0.6), 0 0 18px rgba(0, 255, 0, 0.5)',
-      }}
-    >
-        GAME OVER
-      </motion.h1>
+          textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)',
+        }}
+      >
+        {currentQuote && (
+          <>
+            <img src={currentQuote.icon} alt="victory icon" className="w-24 h-24 mb-4" />
+            {currentQuote.text}
+          </>
+        )}
+      </motion.div>
 
       {!hasSubmitted ? (
-        <div className="text-center mb-6">
-          <p className="text-[40px] mb-4 font-arcade title-font text-shadow-neon" style={{ color: '#ff00ff' }}>
-            SCORE: {score}
+        <div className="text-center mb-4">
+          <p className="text-[40px] mb-4 font-arcade title-font text-shadow-neon" 
+             style={{ color: '#ff00ff' }}>
+            FINAL SCORE: {score}
           </p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
@@ -121,7 +138,7 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
                 color: '#ff00ff',
               }}
             >
-              RETRY
+              PLAY AGAIN
             </button>
             <button
               onClick={() => setShowLeaderboard(true)}
@@ -137,8 +154,9 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
 
           {showLeaderboard && (
             <div className="space-y-4">
-              <h2 className="text-[40px] font-arcade mb-6 text-shadow-title" style={{ color: '#ff00ff' }}>
-                LEADERBOARD
+              <h2 className="text-[40px] font-arcade mb-6 text-shadow-title" 
+                  style={{ color: '#ff00ff' }}>
+                HALL OF FAME
               </h2>
               {topScores.length > 0 ? (
                 topScores.map((entry) => (
@@ -148,8 +166,8 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
                     style={{
                       color: entry.name === playerName ? '#ff00ff' : '#00f7ff',
                       textShadow: entry.name === playerName
-                        ? '0 0 20px rgba(255, 0, 255, 0.8)'
-                        : '0 0 20px rgba(0, 247, 255, 0.8)',
+                        ? '0 0 20px rgba(0, 255, 0, 0.8)'
+                        : '0 0 20px rgba(255, 255, 255, 0.8)',
                     }}
                   >
                     <span className="text-2xl">{entry.name}</span>
@@ -157,7 +175,7 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
                   </div>
                 ))
               ) : (
-                <p className="text-xl text-[#ff00ff]">No scores available</p>
+                <p className="text-xl text-[#ff00ff]">No scores yet! Be the first!</p>
               )}
             </div>
           )}
@@ -167,4 +185,4 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
   );
 };
 
-export default GameOver;
+export default Victory;

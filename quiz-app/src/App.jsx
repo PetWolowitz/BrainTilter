@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import QuestionCard from './components/QuestionCard';
 import GameOver from './components/GameOver';
 import ErrorCounter from './components/ErrorCounter';
+import Victory from './components/Victory';
 import questionsLocal from './data/questions.json';
 import BronzeRookie from './assets/bronze-rookie.svg';
 import BronzeMaster from './assets/bronze-master.svg';
@@ -78,13 +79,13 @@ const App = () => {
   const [difficultyScore, setDifficultyScore] = useState(0);
   const [showFeedback, setShowFeedback] = useState(null);
   const [titleKey, setTitleKey] = useState(0);
+  const [showVictory, setShowVictory] = useState(false); // Stato per mostrare Victory
 
   const usedQuestions = new Set();
 
   useEffect(() => {
     const music = playBackgroundMusic();
     setBackgroundMusic(music);
-    
     return () => {
       if (music) {
         music.pause();
@@ -162,6 +163,7 @@ const App = () => {
     playSound(isCorrect ? 'success' : 'error', isSoundEnabled);
 
     setTimeout(() => {
+      // Aggiorno stato in base a risposta
       if (isCorrect) {
         setDifficultyScore((prev) => prev + 1);
         setScore((prev) => prev + 1);
@@ -183,25 +185,25 @@ const App = () => {
       setShowFeedback({
         type: isCorrect ? 'correct' : 'wrong',
         message: isCorrect
-          ? language === 'it'
-            ? 'Corretto!'
-            : 'Correct!'
-          : language === 'it'
-          ? 'Sbagliato!'
-          : 'Wrong!',
+          ? (language === 'it' ? 'Corretto!' : 'Correct!')
+          : (language === 'it' ? 'Sbagliato!' : 'Wrong!'),
       });
 
+      // Rimuovo feedback dopo 1 secondo
       setTimeout(() => setShowFeedback(null), 1000);
 
+      // Controllo se ho altre domande
       if (currentQuestion + 1 < questions.length) {
         setCurrentQuestion((prev) => prev + 1);
       } else {
+        // Finito il livello
         if (difficultyScore >= levelInfo.requiredScore) {
           setShowLevelComplete(true);
           if (!unlockedRewards.includes(levelInfo.reward)) {
             setUnlockedRewards((prev) => [...prev, levelInfo.reward]);
           }
 
+          // Attendo 2 secondi per animazioni, poi passo al livello dopo o vittoria finale
           setTimeout(() => {
             if (currentLevel < GAME_LEVELS.length) {
               setCurrentLevel((prev) => prev + 1);
@@ -213,10 +215,16 @@ const App = () => {
               }));
               setShowLevelComplete(false);
             } else {
-              setShowResult(true);
+              // Ultimo livello completato
+              if (difficultyScore >= levelInfo.requiredScore) {
+                setShowVictory(true);
+              } else {
+                setShowResult(true);
+              }
             }
           }, 2000);
         } else {
+          // Non raggiunto lo score necessario
           setShowResult(true);
         }
       }
@@ -232,6 +240,7 @@ const App = () => {
     setShowResult(false);
     setShowLevelComplete(false);
     setShowGameOver(false);
+    setShowVictory(false); // Resetto anche showVictory
     setErrorsPerDifficulty({
       easy: 0,
       medium: 0,
@@ -276,30 +285,32 @@ const App = () => {
       <button
         onClick={toggleLanguage}
         className="fixed top-6 right-7 px-4 py-2 rounded-lg bg-custom-purple 
-                    text-white hover:bg-custom-purple/80 transition-colors backdrop-blur-sm 
-                    text-lg shadow-lg border border-white/20 z-50 font-arcade"
+                   text-white hover:bg-custom-purple/80 transition-colors backdrop-blur-sm 
+                   text-lg shadow-lg border border-white/20 z-50 font-arcade"
       >
         {language === 'it' ? 'EN' : 'IT'}
       </button>
 
+
       <button
-  onClick={toggleSound}
-  className="fixed bottom-4 left-7 px-4 py-2 rounded-lg bg-custom-purple 
-              text-white hover:bg-custom-purple/80 transition-colors backdrop-blur-sm 
-              font-arcade text-sm shadow-lg border border-white/20 z-50
-              flex items-center gap-2"
->
-  <span className="text-lg">
-    <img 
-      src={isSoundEnabled ? SoundOffIcon : SoundOnIcon} 
-      alt="sound icon" 
-      className="w-5 h-5"
-    />
-  </span>
-  <span>{isSoundEnabled ? 'MUTE' : 'UNMUTE'}</span>
-</button>
+        onClick={toggleSound}
+        className="fixed bottom-4 left-7 px-4 py-2 rounded-lg bg-custom-purple 
+             text-white hover:bg-custom-purple/80 transition-colors backdrop-blur-sm 
+             font-arcade text-sm shadow-lg border border-white/20 z-50
+             flex items-center gap-2"
+      >
+        <span className="text-lg">
+          <img 
+            src={isSoundEnabled ? SoundOffIcon : SoundOnIcon} 
+            alt="sound icon" 
+            className="w-5 h-5"
+          />
+        </span>
+        <span>{isSoundEnabled ? 'MUTE' : 'UNMUTE'}</span>
+      </button>
+
       <div className="fixed top-4 left-7 px-4 py-2 rounded-lg bg-custom-purple/50 
-                    backdrop-blur-sm border border-white/20 z-50">
+                   backdrop-blur-sm border border-white/20 z-50">
         <p className="text-white font-arcade">
           {language === 'it' ? 'Livello' : 'Level'} {currentLevel} (
           {getCurrentLevelInfo().difficulty.toUpperCase()} )
@@ -318,7 +329,7 @@ const App = () => {
           initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{ duration: 2, type: 'spring' }}
-          style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)', color: '#0cf7d8' }}
+          style={{ textShadow: '0 0 6px rgba(190, 77, 215, 0.7), 0 0 12px rgba(190, 77, 215, 0.6), 0 0 18px rgba(190, 77, 215, 0.5)', color: '#0cf7d8' }}
         >
           Brain Tilter
         </motion.h1>
@@ -340,6 +351,12 @@ const App = () => {
             onSaveScore={saveScore}
             topScores={topScores}
           />
+        ) : showVictory ? (
+          <Victory
+            onRestart={restartQuiz}
+            score={score}
+            onSaveScore={saveScore}
+          />
         ) : showLevelComplete ? (
           <div className="text-center backdrop-blur-md bg-white/10 rounded-xl p-6 border border-white/20">
             <h2 className="text-3xl font-arcade mb-4 text-white">
@@ -354,6 +371,15 @@ const App = () => {
             onAnswer={handleAnswer}
             timeLimit={getCurrentLevelInfo().timeLimit}
             language={language}
+          />
+        ) : showResult ? (
+          <GameOver
+            difficulty={getCurrentLevelInfo().difficulty}
+            score={score}
+            language={language}
+            onRestart={restartQuiz}
+            onSaveScore={saveScore}
+            topScores={topScores}
           />
         ) : null}
       </AnimatePresence>
