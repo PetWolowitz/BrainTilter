@@ -60,30 +60,30 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
   // Resto del componente GameOver
   return (
     <div className="fixed inset-0 flex flex-col items-center bg-black/85 text-center font-arcade overflow-y-scroll">
-  <motion.h1
-    initial={{ opacity: 0, y: -50 }}
-    animate={{
-      opacity: [0, 1, 0.8, 1],
-      scale: [1, 1.1, 1],
-    }}
-    transition={{
-      duration: 2,
-      times: [0, 0.3, 0.6, 1],
-      repeat: Infinity,
-      ease: 'linear',
-    }}
-    className="text-[100px] mt-8 text-shadow-title font-arcade relative flex flex-col items-center 
-               sticky top-10 z-10  py-12" 
-    style={{
-      color: '#00f7ff',
-      textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)',
-    }}
-  >
-    GAME OVER
-  </motion.h1>
+      <motion.h1
+        initial={{ opacity: 0, y: -50 }}
+        animate={{
+        opacity: [0, 1, 0.8, 1],
+        scale: [1, 1.1, 1],
+      }}
+        transition={{
+          duration: 2,
+          times: [0, 0.3, 0.6, 1],
+          repeat: Infinity,
+          ease: 'linear',
+      }}
+        className="text-[100px] mt-20 text-shadow-title font-arcade relative flex flex-col items-center 
+                    sticky top-10 z-10 py-14" 
+        style={{
+          color: '#00f7ff',
+          textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)',
+      }}
+    >
+        GAME OVER
+      </motion.h1>
 
       {!hasSubmitted ? (
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <p className="text-[40px] mb-4 font-arcade title-font text-shadow-neon" style={{ color: '#ff00ff' }}>
             SCORE: {score}
           </p>

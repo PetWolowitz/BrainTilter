@@ -15,7 +15,27 @@ import EliteRookie from './assets/elite-rookie.svg';
 import EliteMaster from './assets/elite-master.svg';
 import CorrectIcon from './assets/correct.svg';
 import WrongIcon from './assets/wrong.svg';
+import SoundOnIcon from './assets/sound-on.svg';
+import SoundOffIcon from './assets/sound-off.svg';
 import './App.css';
+
+const playBackgroundMusic = () => {
+  const timestamp = new Date().getTime();
+  const audio = new Audio(`/sounds/background.wav?v=${timestamp}`);
+  audio.loop = true;
+  audio.volume = 0.2;
+  audio.play().catch(() => {});
+  return audio;
+};
+
+const playSound = (soundName, isSoundEnabled) => {
+  if (!isSoundEnabled) return;
+  try {
+    const audio = new Audio(`/sounds/${soundName}.${soundName === 'game-over' ? 'wav' : 'mp3'}`);
+    audio.volume = 0.2;
+    audio.play().catch(() => {});
+  } catch (error) {}
+};
 
 const GAME_LEVELS = [
   { id: 1, difficulty: 'easy', level: 1, reward: BronzeRookie, timeLimit: 10, requiredScore: 3, totalQuestions: 5 },
@@ -25,14 +45,8 @@ const GAME_LEVELS = [
   { id: 5, difficulty: 'hard', level: 1, reward: GoldRookie, timeLimit: 45, requiredScore: 3, totalQuestions: 5 },
   { id: 6, difficulty: 'hard', level: 2, reward: GoldMaster, timeLimit: 45, requiredScore: 3, totalQuestions: 5 },
   { id: 7, difficulty: 'extreme', level: 1, reward: EliteRookie, timeLimit: 60, requiredScore: 3, totalQuestions: 5 },
-  { id: 8, difficulty: 'extreme', level: 2, reward: EliteMaster, timeLimit: 60, requiredScore: 3, totalQuestions: 5 },
+  { id: 8, difficulty: 'extreme', level: 2, reward: EliteMaster, timeLimit: 60, requiredScore: 3, totalQuestions: 5 }
 ];
-
-const playSound = (soundName) => {
-  const audio = new Audio(`/sounds/${soundName}.mp3`);
-  audio.volume = 0.5;
-  audio.play().catch((error) => console.log('Audio play failed:', error));
-};
 
 const shuffleArray = (array) => {
   return array
@@ -52,6 +66,8 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [showLevelComplete, setShowLevelComplete] = useState(false);
   const [unlockedRewards, setUnlockedRewards] = useState([]);
+  const [backgroundMusic, setBackgroundMusic] = useState(null);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
   const [errorsPerDifficulty, setErrorsPerDifficulty] = useState({
     easy: 0,
     medium: 0,
@@ -61,9 +77,32 @@ const App = () => {
   const [showGameOver, setShowGameOver] = useState(false);
   const [difficultyScore, setDifficultyScore] = useState(0);
   const [showFeedback, setShowFeedback] = useState(null);
-  const [titleKey, setTitleKey] = useState(0); // Nuovo stato per rianimare il titolo
+  const [titleKey, setTitleKey] = useState(0);
 
   const usedQuestions = new Set();
+
+  useEffect(() => {
+    const music = playBackgroundMusic();
+    setBackgroundMusic(music);
+    
+    return () => {
+      if (music) {
+        music.pause();
+        music.src = '';
+      }
+    };
+  }, []);
+
+  const toggleSound = () => {
+    setIsSoundEnabled(!isSoundEnabled);
+    if (backgroundMusic) {
+      if (isSoundEnabled) {
+        backgroundMusic.pause();
+      } else {
+        backgroundMusic.play().catch(() => {});
+      }
+    }
+  };
 
   const getCurrentLevelInfo = () => GAME_LEVELS[currentLevel - 1];
 
@@ -120,7 +159,7 @@ const App = () => {
     const levelInfo = getCurrentLevelInfo();
     const isCorrect = answer === questions[currentQuestion]?.correct;
 
-    playSound(isCorrect ? 'success' : 'error');
+    playSound(isCorrect ? 'success' : 'error', isSoundEnabled);
 
     setTimeout(() => {
       if (isCorrect) {
@@ -134,7 +173,7 @@ const App = () => {
         setErrorsPerDifficulty(newErrors);
 
         if (newErrors[levelInfo.difficulty] >= 2) {
-          playSound('game-over');
+          playSound('game-over', isSoundEnabled);
           setShowGameOver(true);
           return;
         }
@@ -205,7 +244,7 @@ const App = () => {
 
   const toggleLanguage = () => {
     setLanguage((prev) => (prev === 'it' ? 'en' : 'it'));
-    setTitleKey((prev) => prev + 1); // Cambia il valore per forzare l'animazione del titolo
+    setTitleKey((prev) => prev + 1);
     restartQuiz();
   };
 
@@ -229,21 +268,37 @@ const App = () => {
         autoPlay
         loop
         muted
-        style={{ zIndex: -1, filter: 'brightness(0.8), ' }}
+        style={{ zIndex: -1, filter: 'brightness(0.8)' }}
       >
         <source src="/media/background.mp4" type="video/mp4" />
       </video>
 
       <button
         onClick={toggleLanguage}
-        className="fixed top-4 right-4 px-4 py-2 rounded-lg bg-custom-purple 
-                 text-white hover:bg-custom-purple/80 transition-colors backdrop-blur-sm 
-                 font-arcade text-lg shadow-lg border border-white/20 z-50"
+        className="fixed top-6 right-7 px-4 py-2 rounded-lg bg-custom-purple 
+                    text-white hover:bg-custom-purple/80 transition-colors backdrop-blur-sm 
+                    text-lg shadow-lg border border-white/20 z-50 font-arcade"
       >
         {language === 'it' ? 'EN' : 'IT'}
       </button>
 
-      <div className="fixed top-4 left-4 px-4 py-2 rounded-lg bg-custom-purple/50 
+      <button
+  onClick={toggleSound}
+  className="fixed bottom-4 left-7 px-4 py-2 rounded-lg bg-custom-purple 
+              text-white hover:bg-custom-purple/80 transition-colors backdrop-blur-sm 
+              font-arcade text-sm shadow-lg border border-white/20 z-50
+              flex items-center gap-2"
+>
+  <span className="text-lg">
+    <img 
+      src={isSoundEnabled ? SoundOffIcon : SoundOnIcon} 
+      alt="sound icon" 
+      className="w-5 h-5"
+    />
+  </span>
+  <span>{isSoundEnabled ? 'MUTE' : 'UNMUTE'}</span>
+</button>
+      <div className="fixed top-4 left-7 px-4 py-2 rounded-lg bg-custom-purple/50 
                     backdrop-blur-sm border border-white/20 z-50">
         <p className="text-white font-arcade">
           {language === 'it' ? 'Livello' : 'Level'} {currentLevel} (
@@ -257,17 +312,17 @@ const App = () => {
       </div>
 
       <div className="w-full max-w-4xl text-center mb-8">
-  <motion.h1
-    key={titleKey} // Cambia chiave per riapplicare l'animazione
-    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-digital"
-    initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
-    animate={{ scale: 1, rotate: 0, opacity: 1 }}
-    transition={{ duration: 2, type: 'spring' }}
-    style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)', color: '#0cf7d8' }}
-  >
-    Brain Tilter
-  </motion.h1>
-</div>
+        <motion.h1
+          key={titleKey}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-digital"
+          initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
+          animate={{ scale: 1, rotate: 0, opacity: 1 }}
+          transition={{ duration: 2, type: 'spring' }}
+          style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)', color: '#0cf7d8' }}
+        >
+          Brain Tilter
+        </motion.h1>
+      </div>
 
       <AnimatePresence mode="wait">
         {loading ? (
@@ -305,18 +360,20 @@ const App = () => {
 
       {showFeedback && (
         <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}    // Solo fade out, senza spostamenti o rotazioni
-        transition={{ duration: 0.5 }}
-        className="fixed top-1/2 left-1/4 transform -translate-x-1/2"
-      >
-        <img
-          src={showFeedback.type === 'correct' ? CorrectIcon : WrongIcon}
-          alt={showFeedback.type}
-          className="w-[5vw] h-[5vw]" // Dimensioni in base al viewport, restano proporzionate su ogni schermo
-        />
-      </motion.div>
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            duration: 0.5,
+          }}
+          className="fixed top-1/2 left-1/4 transform -translate-x-1/2"
+        >
+          <img
+            src={showFeedback.type === 'correct' ? CorrectIcon : WrongIcon}
+            alt={showFeedback.type}
+            className="w-[5vw] h-[5vw]"
+          />
+        </motion.div>
       )}
     </div>
   );
