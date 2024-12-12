@@ -13,14 +13,14 @@ app.use(express.json());
 
 // Connessione a MongoDB
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connesso a MongoDB'))
-  .catch((error) => console.error('Errore di connessione a MongoDB:', error));
+.then(() => console.log('Connesso a MongoDB'))
+.catch((error) => console.error('Errore di connessione a MongoDB:', error));
 
 // Modello per la leaderboard
 const ScoreSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  score: { type: Number, required: true },
-  createdAt: { type: Date, default: Date.now },
+    name: { type: String, required: true },
+    score: { type: Number, required: true },
+    createdAt: { type: Date, default: Date.now },
 });
 
 const Score = mongoose.model('Score', ScoreSchema);
@@ -50,7 +50,18 @@ app.post('/leaderboard', async (req, res) => {
     }
 });
 
+
+app.delete('/leaderboard/clear', async (req, res) => {
+    try {
+        await Score.deleteMany({});
+        res.status(200).send({ message: 'Tutti i punteggi sono stati eliminati!' });
+    } catch (error) {
+        res.status(500).send({ error: 'Errore durante la pulizia dei punteggi.' });
+    }
+});
+
+
 // Avvio del server
 app.listen(PORT, () => {
-  console.log(`Server in ascolto su http://localhost:${PORT}`);
+    console.log(`Server in ascolto su http://localhost:${PORT}`);
 });

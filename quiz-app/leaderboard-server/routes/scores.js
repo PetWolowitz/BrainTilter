@@ -25,4 +25,14 @@ router.post('/', async (req, res) => {
   }
 });
 
+// DELETE: Elimina tutti i punteggi
+router.delete('/clear', async (req, res) => {
+  try {
+    await Score.deleteMany({});
+    res.status(200).send({ message: 'All scores cleared!' });
+  } catch (error) {
+    res.status(500).send({ error: 'Error clearing scores.' });
+  }
+});
+
 module.exports = router;

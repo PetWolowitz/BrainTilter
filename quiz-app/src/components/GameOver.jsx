@@ -73,9 +73,10 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
       ease: 'linear',
     }}
     className="text-[100px] mt-8 text-shadow-title font-arcade relative flex flex-col items-center 
-               sticky top-10 z-10 bg-black/90 py-12" 
+               sticky top-10 z-10  py-12" 
     style={{
       color: '#00f7ff',
+      textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)',
     }}
   >
     GAME OVER

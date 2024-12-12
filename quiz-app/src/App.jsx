@@ -229,7 +229,7 @@ const App = () => {
         autoPlay
         loop
         muted
-        style={{ zIndex: -1 }}
+        style={{ zIndex: -1, filter: 'brightness(0.8), ' }}
       >
         <source src="/media/background.mp4" type="video/mp4" />
       </video>
@@ -259,10 +259,11 @@ const App = () => {
       <div className="w-full max-w-4xl text-center mb-8">
   <motion.h1
     key={titleKey} // Cambia chiave per riapplicare l'animazione
-    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-digital text-white"
+    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-digital"
     initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
     animate={{ scale: 1, rotate: 0, opacity: 1 }}
     transition={{ duration: 2, type: 'spring' }}
+    style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)', color: '#0cf7d8' }}
   >
     Brain Tilter
   </motion.h1>
