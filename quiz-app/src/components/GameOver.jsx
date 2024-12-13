@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-
+import ApiService from '../services/ApiService';
+import SecurityService from '../services/SecurityService';
 
 // Aggiungiamo useState e useEffect per gestire lo stato del componente
 const GameOver = ({ onRestart, score, onSaveScore }) => {
@@ -13,17 +14,12 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
   // Funzione per caricare la leaderboard dal server
   const fetchLeaderboard = async () => {
     try {
-      const response = await fetch('http://localhost:5000/leaderboard'); // Cambiato endpoint
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await ApiService.fetchLeaderboard();
       setTopScores(data);
     } catch (error) {
       console.error('Errore nel caricamento della leaderboard:', error);
     }
   };
-  
   useEffect(() => {
     if (showLeaderboard) {
       fetchLeaderboard();
@@ -33,29 +29,27 @@ const GameOver = ({ onRestart, score, onSaveScore }) => {
 
   // Funzione per gestire l'invio del punteggio
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (playerName.trim()) {
-    try {
-      const response = await fetch('http://localhost:5000/leaderboard', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: playerName.toUpperCase(),
-          score,
-        }),
+    e.preventDefault();
+    if (playerName.trim()) {
+      const validationResult = SecurityService.validateApiRequest({
+        name: playerName.toUpperCase(),
+        score,
       });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+  
+      if (!validationResult.isValid) {
+        console.error('Invalid data');
+        return;
       }
-      setHasSubmitted(true);
-    } catch (error) {
-      console.error('Errore nell\'invio del punteggio:', error);
+  
+      try {
+        await ApiService.saveScore(validationResult.sanitizedData);
+        setHasSubmitted(true);
+        fetchLeaderboard(); // Ricarica la leaderboard
+      } catch (error) {
+        console.error('Errore nell\'invio del punteggio:', error);
+      }
     }
-  }
-};
-
+  };
 
   // Resto del componente GameOver
   return (

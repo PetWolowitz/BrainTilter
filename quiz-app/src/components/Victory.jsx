@@ -5,6 +5,8 @@ import TrophyIcon from '../assets/trophy.svg';
 import BrainIcon from '../assets/brain.svg';
 import MatrixIcon from '../assets/matrix.svg';
 import NinjaIcon from '../assets/ninja.svg';
+import ApiService from '../services/ApiService';
+import SecurityService from '../services/SecurityService';
 
 const Victory = ({ onRestart, score, onSaveScore }) => {
   const [playerName, setPlayerName] = useState('');
@@ -28,11 +30,7 @@ const Victory = ({ onRestart, score, onSaveScore }) => {
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await fetch('http://localhost:5000/leaderboard');
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await ApiService.fetchLeaderboard();
       setTopScores(data);
     } catch (error) {
       console.error('Errore nel caricamento della leaderboard:', error);
@@ -48,21 +46,20 @@ const Victory = ({ onRestart, score, onSaveScore }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (playerName.trim()) {
+      const validationResult = SecurityService.validateApiRequest({
+        name: playerName.toUpperCase(),
+        score,
+      });
+  
+      if (!validationResult.isValid) {
+        console.error('Invalid data');
+        return;
+      }
+  
       try {
-        const response = await fetch('http://localhost:5000/leaderboard', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: playerName.toUpperCase(),
-            score,
-          }),
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        await ApiService.saveScore(validationResult.sanitizedData);
         setHasSubmitted(true);
+        fetchLeaderboard(); // Ricarica la leaderboard
       } catch (error) {
         console.error('Errore nell\'invio del punteggio:', error);
       }

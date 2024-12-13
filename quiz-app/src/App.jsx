@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
+import AudioManager from './services/AudioManager';
+import GameService from './services/GameService';
+import ApiService from './services/ApiService';
+import SecurityService from './services/SecurityService'
 import QuestionCard from './components/QuestionCard';
 import GameOver from './components/GameOver';
 import ErrorCounter from './components/ErrorCounter';
@@ -20,23 +24,6 @@ import SoundOnIcon from './assets/sound-on.svg';
 import SoundOffIcon from './assets/sound-off.svg';
 import './App.css';
 
-const playBackgroundMusic = () => {
-  const timestamp = new Date().getTime();
-  const audio = new Audio(`/sounds/background.wav?v=${timestamp}`);
-  audio.loop = true;
-  audio.volume = 0.2;
-  audio.play().catch(() => {});
-  return audio;
-};
-
-const playSound = (soundName, isSoundEnabled) => {
-  if (!isSoundEnabled) return;
-  try {
-    const audio = new Audio(`/sounds/${soundName}.${soundName === 'game-over' ? 'wav' : 'mp3'}`);
-    audio.volume = 0.2;
-    audio.play().catch(() => {});
-  } catch (error) {}
-};
 
 const GAME_LEVELS = [
   { id: 1, difficulty: 'easy', level: 1, reward: BronzeRookie, timeLimit: 10, requiredScore: 3, totalQuestions: 5 },
@@ -83,26 +70,19 @@ const App = () => {
 
   const usedQuestions = new Set();
 
+
+// gestione audio
   useEffect(() => {
-    const music = playBackgroundMusic();
-    setBackgroundMusic(music);
+    AudioManager.preloadAudio();
+    AudioManager.startBackgroundMusic();
     return () => {
-      if (music) {
-        music.pause();
-        music.src = '';
-      }
+      AudioManager.cleanup();
     };
   }, []);
 
   const toggleSound = () => {
-    setIsSoundEnabled(!isSoundEnabled);
-    if (backgroundMusic) {
-      if (isSoundEnabled) {
-        backgroundMusic.pause();
-      } else {
-        backgroundMusic.play().catch(() => {});
-      }
-    }
+    const isEnabled = AudioManager.toggleSound();
+    setIsSoundEnabled(isEnabled);
   };
 
   const getCurrentLevelInfo = () => GAME_LEVELS[currentLevel - 1];
@@ -111,125 +91,119 @@ const App = () => {
     setLoading(true);
     try {
       const levelInfo = getCurrentLevelInfo();
-
-      if (language === 'it') {
-        const availableQuestions = questionsLocal.filter(
-          (q) => q.difficulty === levelInfo.difficulty && !usedQuestions.has(q.question)
-        );
-
-        const shuffledQuestions = shuffleArray(availableQuestions);
-        const selectedQuestions = shuffledQuestions.slice(0, levelInfo.totalQuestions);
-        selectedQuestions.forEach((q) => usedQuestions.add(q.question));
-        setQuestions(
-          selectedQuestions.map((q) => ({
-            ...q,
-            options: shuffleArray(q.options),
-          }))
-        );
-      } else {
-        const response = await axios.get(
-          `https://opentdb.com/api.php?amount=${levelInfo.totalQuestions}&type=multiple`
-        );
-
-        const formattedQuestions = response.data.results.map((item) => ({
-          question: item.question,
-          options: shuffleArray([...item.incorrect_answers, item.correct_answer]),
-          correct: item.correct_answer,
-          difficulty: levelInfo.difficulty,
-        }));
-
-        setQuestions(formattedQuestions);
-      }
+      const questions = await ApiService.fetchQuestions({
+        language,
+        difficulty: levelInfo.difficulty,
+        amount: levelInfo.totalQuestions,
+        usedQuestions
+      });
+      
+      setQuestions(questions);
     } catch (error) {
       console.error('Errore durante il caricamento delle domande:', error);
     } finally {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     loadQuestions();
   }, [language, currentLevel]);
 
   const handleAnswer = (answer) => {
     if (!questions[currentQuestion]) {
-      console.warn("Domanda non trovata. Possibile problema con il caricamento delle domande.");
+      console.warn("Domanda non trovata.");
       return;
     }
-
+   
     const levelInfo = getCurrentLevelInfo();
-    const isCorrect = answer === questions[currentQuestion]?.correct;
-
-    playSound(isCorrect ? 'success' : 'error', isSoundEnabled);
-
+   
     setTimeout(() => {
-      // Aggiorno stato in base a risposta
-      if (isCorrect) {
-        setDifficultyScore((prev) => prev + 1);
-        setScore((prev) => prev + 1);
-      } else {
-        const newErrors = {
-          ...errorsPerDifficulty,
-          [levelInfo.difficulty]: errorsPerDifficulty[levelInfo.difficulty] + 1,
-        };
-        setErrorsPerDifficulty(newErrors);
-
-        if (newErrors[levelInfo.difficulty] >= 2) {
-          playSound('game-over', isSoundEnabled);
-          setShowGameOver(true);
-          return;
-        }
-      }
-
-      setTotalQuestionsAnswered((prev) => prev + 1);
-      setShowFeedback({
-        type: isCorrect ? 'correct' : 'wrong',
-        message: isCorrect
-          ? (language === 'it' ? 'Corretto!' : 'Correct!')
-          : (language === 'it' ? 'Sbagliato!' : 'Wrong!'),
+      // Log per vedere i dati in ingresso
+      console.log('Input data:', {
+        answer,
+        currentQuestion,
+        questions,
+        levelInfo,
+        errorsPerDifficulty,
+        language
       });
-
+   
+      const result = GameService.processAnswer({
+        answer,
+        currentQuestion,
+        questions,
+        levelInfo,
+        errorsPerDifficulty,
+        language
+      });
+   
+      // Log per vedere il risultato 
+      console.log('GameService result:', result);
+   
+      // Aggiorna stati basati sul risultato
+      setDifficultyScore(prev => prev + result.difficultyScoreIncrement);
+      setScore(prev => prev + result.scoreIncrement);
+      setShowFeedback(result.feedback);
+      
+      if (result.newErrors) {
+        setErrorsPerDifficulty(result.newErrors);
+      }
+   
+      if (result.showGameOver) {
+        AudioManager.playSound('game-over');
+        setShowGameOver(true);
+        return;
+      }
+   
+      setTotalQuestionsAnswered(prev => prev + 1);
+   
       // Rimuovo feedback dopo 1 secondo
       setTimeout(() => setShowFeedback(null), 1000);
-
+   
       // Controllo se ho altre domande
       if (currentQuestion + 1 < questions.length) {
-        setCurrentQuestion((prev) => prev + 1);
+        setCurrentQuestion(prev => prev + 1);
       } else {
-        // Finito il livello
-        if (difficultyScore >= levelInfo.requiredScore) {
+        // Controllo completamento livello
+        const levelStatus = GameService.checkLevelCompletion({
+          currentQuestion,
+          questions,
+          difficultyScore,
+          levelInfo,
+          currentLevel,
+          GAME_LEVELS
+        });
+   
+        if (levelStatus.hasPassedLevel) {
           setShowLevelComplete(true);
           if (!unlockedRewards.includes(levelInfo.reward)) {
-            setUnlockedRewards((prev) => [...prev, levelInfo.reward]);
+            setUnlockedRewards(prev => [...prev, levelInfo.reward]);
           }
-
-          // Attendo 2 secondi per animazioni, poi passo al livello dopo o vittoria finale
+   
+          // Attendo 2 secondi per animazioni
           setTimeout(() => {
-            if (currentLevel < GAME_LEVELS.length) {
-              setCurrentLevel((prev) => prev + 1);
+            if (!levelStatus.isLastLevel) {
+              setCurrentLevel(prev => prev + 1);
               setDifficultyScore(0);
               setCurrentQuestion(0);
-              setErrorsPerDifficulty((prev) => ({
+              setErrorsPerDifficulty(prev => ({
                 ...prev,
                 [levelInfo.difficulty]: 0,
               }));
               setShowLevelComplete(false);
             } else {
-              // Ultimo livello completato
-              if (difficultyScore >= levelInfo.requiredScore) {
-                setShowVictory(true);
-              } else {
+              setShowVictory(levelStatus.showVictory);
+              if (!levelStatus.showVictory) {
                 setShowResult(true);
               }
             }
           }, 2000);
         } else {
-          // Non raggiunto lo score necessario
           setShowResult(true);
         }
       }
-    }, 0);
-  };
+    }, 0); // setTimeout principale per permettere l'aggiornamento del DOM
+   };
 
   const restartQuiz = () => {
     setCurrentLevel(1);
@@ -262,14 +236,34 @@ const App = () => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const saveScore = (playerData) => {
-    const newScores = [...topScores, playerData]
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 10);
-    setTopScores(newScores);
-    localStorage.setItem('leaderboard', JSON.stringify(newScores));
+  const saveScore = async (playerData) => {
+    const validationResult = SecurityService.validateApiRequest({
+      name: playerData.name,
+      score: playerData.score,
+    });
+  
+    if (!validationResult.isValid) {
+      console.error('Invalid data');
+      return;
+    }
+  
+    try {
+      const response = await fetch('http://localhost:5000/leaderboard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(validationResult.sanitizedData)
+      });
+      
+      if (!response.ok) throw new Error('Network response was not ok');
+      
+      const newScores = await response.json();
+      setTopScores(newScores);
+    } catch (error) {
+      console.error('Error saving score:', error);
+    }
   };
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative font-arcade">
       <video
@@ -308,6 +302,7 @@ const App = () => {
         </span>
         <span>{isSoundEnabled ? 'MUTE' : 'UNMUTE'}</span>
       </button>
+      
 
       <div className="fixed top-4 left-7 px-4 py-2 rounded-lg bg-custom-purple/50 
                    backdrop-blur-sm border border-white/20 z-50">
