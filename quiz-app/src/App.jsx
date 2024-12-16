@@ -18,11 +18,9 @@ import GoldRookie from './assets/gold-rookie.svg';
 import GoldMaster from './assets/gold-master.svg';
 import EliteRookie from './assets/elite-rookie.svg';
 import EliteMaster from './assets/elite-master.svg';
-import CorrectIcon from './assets/correct.svg';
-import WrongIcon from './assets/wrong.svg';
 import SoundOnIcon from './assets/sound-on.svg';
 import SoundOffIcon from './assets/sound-off.svg';
-import './App.css';
+
 
 
 const GAME_LEVELS = [
@@ -119,14 +117,14 @@ const App = () => {
    
     setTimeout(() => {
       // Log per vedere i dati in ingresso
-      console.log('Input data:', {
-        answer,
-        currentQuestion,
-        questions,
-        levelInfo,
-        errorsPerDifficulty,
-        language
-      });
+      // console.log('Input data:', {
+      //   answer,
+      //   currentQuestion,
+      //   questions,
+      //   levelInfo,
+      //   errorsPerDifficulty,
+      //   language
+      // });
    
       const result = GameService.processAnswer({
         answer,
@@ -138,7 +136,7 @@ const App = () => {
       });
    
       // Log per vedere il risultato 
-      console.log('GameService result:', result);
+      // console.log('GameService result:', result);
    
       // Aggiorna stati basati sul risultato
       setDifficultyScore(prev => prev + result.difficultyScoreIncrement);
@@ -178,6 +176,7 @@ const App = () => {
           setShowLevelComplete(true);
           if (!unlockedRewards.includes(levelInfo.reward)) {
             setUnlockedRewards(prev => [...prev, levelInfo.reward]);
+            AudioManager.playLevelUpSound(currentLevel);
           }
    
           // Attendo 2 secondi per animazioni
@@ -192,11 +191,13 @@ const App = () => {
               }));
               setShowLevelComplete(false);
             } else {
-              setShowVictory(levelStatus.showVictory);
-              if (!levelStatus.showVictory) {
-                setShowResult(true);
+              if (levelStatus.showVictory) {
+                  AudioManager.playSound('victory', null, 0);  
+                  setShowVictory(true);
+              } else {
+                  setShowResult(true);
               }
-            }
+          }
           }, 2000);
         } else {
           setShowResult(true);
@@ -284,6 +285,7 @@ const App = () => {
       >
         {language === 'it' ? 'EN' : 'IT'}
       </button>
+      
 
 
       <button
@@ -380,22 +382,8 @@ const App = () => {
       </AnimatePresence>
 
       {showFeedback && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{
-            duration: 0.5,
-          }}
-          className="fixed top-1/2 left-1/4 transform -translate-x-1/2"
-        >
-          <img
-            src={showFeedback.type === 'correct' ? CorrectIcon : WrongIcon}
-            alt={showFeedback.type}
-            className="w-[5vw] h-[5vw]"
-          />
-        </motion.div>
-      )}
+        AudioManager.playSound(showFeedback.type === 'correct' ? 'correct' : 'wrong', null, showFeedback.type === 'correct' ? 0 : 100)
+      )}  
     </div>
   );
 };
