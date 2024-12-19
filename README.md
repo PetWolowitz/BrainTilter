@@ -1,4 +1,4 @@
-Brain Tilter è un'applicazione di quiz interattiva progettata per mettere alla prova le conoscenze degli utenti con domande a scelta multipla, suddivise per livelli di difficoltà. Ogni livello sfida il giocatore con un set di domande casuali, un limite di tempo e un numero massimo di errori consentiti.
+Brain Tilter (www.purplecoast.it) è un'applicazione di quiz interattiva progettata per mettere alla prova le conoscenze degli utenti con domande a scelta multipla, suddivise per livelli di difficoltà. Ogni livello sfida il giocatore con un set di domande casuali, un limite di tempo e un numero massimo di errori consentiti.
 
 L'app offre un'esperienza coinvolgente grazie a premi sbloccabili, effetti sonori, animazioni fluide e supporto multilingua (Italiano e Inglese). Gli utenti possono progredire nei livelli o ricominciare in caso di Game Over, con ogni partita che garantisce una selezione unica di domande grazie a un sistema avanzato di randomizzazione.
 
@@ -77,4 +77,6 @@ Backup automatico delle domande locali in caso di errore nell'API.
 Fix Animazioni:
 Modificato lo z-index e il layout per evitare che le animazioni interferissero con i pulsanti.
 Gestione Multilingua:
-Integrazione delle domande locali e dell'API Open Trivia per supportare le due lingue.
+Integrazione delle domande locali e dell'API Open Trivia per supportare le due lingue. 
+www.purplecoast.it
+
