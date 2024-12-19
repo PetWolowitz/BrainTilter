@@ -11,6 +11,7 @@ class AudioManager {
             'level-up': 0.4,         
             'victory': 0.4           
         };
+        
     }
 
     preloadAudio() {
@@ -19,8 +20,8 @@ class AudioManager {
             'correct': '/sounds/correct.mp3',
             'wrong': '/sounds/wrong.mp3',
             'game-over': '/sounds/game-over.wav',
-            'level-up': '/sounds/level-up.mp3',    // Aggiungi virgola qui
-            'victory': '/sounds/victory.mp3'        // Ultima voce senza virgola
+            'level-up': '/sounds/level-up.mp3',
+            'victory': '/sounds/victory.mp3'
         };
         
         for (const [key, path] of Object.entries(sounds)) {
@@ -28,7 +29,19 @@ class AudioManager {
             if (key === 'background') {
                 audio.loop = true;
                 audio.volume = this.volumes[key];
-                this.backgroundMusic = audio; // Salviamo riferimento specifico per background
+                audio.preload = 'auto';  // Aggiunto
+                this.backgroundMusic = audio;
+                // Tenta di avviare l'audio dopo un breve delay
+                setTimeout(() => {
+                    audio.play().catch(() => {
+                        // Se fallisce, prova a riprodurre al primo click sulla pagina
+                        document.addEventListener('click', () => {
+                            if (this.isSoundEnabled && audio.paused) {
+                                audio.play().catch(() => {});
+                            }
+                        }, { once: true });
+                    });
+                }, 1000);
             } else {
                 audio.volume = this.volumes[key];
             }

@@ -3,7 +3,7 @@ import questionsLocal from '../data/questions.json';
 
 class ApiService {
   constructor() {
-    this.baseURL = 'http://localhost:5000';
+    this.baseURL = 'https://api.purplecoast.it'; 
   }
 
   async fetchQuestions({ language, difficulty, amount, usedQuestions }) {
@@ -23,7 +23,7 @@ class ApiService {
           options: this.shuffleArray(q.options),
         }));
       } else {
-        // Gestione domande inglesi da API
+        // Gestione domande inglesi da API esterna (OpenTDB)
         const response = await fetch(`https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&type=multiple`);
         const data = await response.json();
 
